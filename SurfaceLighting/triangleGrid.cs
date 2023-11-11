@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace SurfaceLighting
 {
-    internal class triangleGrid
+    internal class TriangleGrid
     {
         public int n { get; set; } // n*n - number of triangles in the grid
-        public List<triangle> triangles { get; set; } = new List<triangle>();
+        public List<Triangle3D> triangles { get; set; } = new List<Triangle3D>();
 
-        public triangleGrid(int n)
+        public TriangleGrid(int n)
         {
             this.n = n;
             initTriangleGrid();
@@ -27,8 +27,8 @@ namespace SurfaceLighting
             {
                 for (float j = 0; j < n; j+=step)
                 {
-                    triangles.Add(new triangle(i, j, i + step, j, i + step, j + step));
-                    triangles.Add(new triangle(i, j, i, j + step, i + step, j + step));
+                    triangles.Add(new Triangle3D(i, j, i + step, j, i + step, j + step));
+                    triangles.Add(new Triangle3D(i, j, i, j + step, i + step, j + step));
                 }
             }
         }

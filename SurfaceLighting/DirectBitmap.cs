@@ -52,9 +52,16 @@ namespace SurfaceLighting
             return new PointF(scaledX, scaledY);
         }
 
-        public triangle scaleTriangle(triangle t)
+        public Point3D scalePoint(Point3D point)
         {
-            return new triangle(scalePoint(t.vertices[0]), scalePoint(t.vertices[1]),
+            float scaledX = point.x * (Width - 1);
+            float scaledY = (1 - point.y) * (Height - 1);
+            return new Point3D(scaledX, scaledY, point.z);
+        }
+
+        public Triangle3D scaleTriangle(Triangle3D t)
+        {
+            return new Triangle3D(scalePoint(t.vertices[0]), scalePoint(t.vertices[1]),
                 scalePoint(t.vertices[2]));
         }
 

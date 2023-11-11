@@ -45,20 +45,20 @@ namespace SurfaceLighting
                 }
             }
 
-            triangleGrid tg = new triangleGrid(30);
+            TriangleGrid tg = new TriangleGrid(30);
             for (int i = 0; i < tg.triangles.Count; i++)
             {
 
 
                 // Przeskaluj wspó³rzêdne na podstawie rozmiaru DirectBitmap
-                triangle scaledTriangle = directBitmap.scaleTriangle(tg.triangles[i]);
+                Triangle3D scaledTriangle = directBitmap.scaleTriangle(tg.triangles[i]);
 
 
 
                 // Narysuj okr¹g
                 using (Pen pen = new Pen(Color.Red, 2))
                 {
-                    g.DrawPolygon(pen, scaledTriangle.vertices);
+                    g.DrawPolygon(pen, scaledTriangle.vertices2D());
                 }
             }
 
