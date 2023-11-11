@@ -13,17 +13,20 @@ namespace SurfaceLighting
         const int k = 4; // k*k - number of control points
         Point3D[,] controlPoints = new Point3D[k, k];
         Vector3[,] controlVectors = new Vector3[k, k];
+        public TriangleGrid triangleGrid { get; set; }
 
         public DirectBitmap controlPointsBM { get; private set; }
         public Graphics g { get; private set; }
 
-        public BezeierSurface(TriangleGrid tg, int size)
+        public BezeierSurface(int size)
         {
+            triangleGrid = new TriangleGrid(3, size);
+
             initControlPoints();
             initControlVectors();
             initBitmap(size);
-            calculateZ(tg);
-            calculateNormalVectors(tg);
+            calculateZ();
+            calculateNormalVectors();
         }
 
         private void initControlPoints()
@@ -68,7 +71,7 @@ namespace SurfaceLighting
         }
 
         #region calculateZ
-        public void calculateZ(TriangleGrid triangleGrid)
+        public void calculateZ()
         {
             foreach (var triangle in triangleGrid.triangles)
                 foreach (var point in triangle.vertices)
@@ -102,7 +105,7 @@ namespace SurfaceLighting
 
         #region calculateNormalVectors
 
-        public void calculateNormalVectors(TriangleGrid triangleGrid)
+        public void calculateNormalVectors()
         {
             foreach (var triangle in triangleGrid.triangles)
                 for (int i = 0; i < triangle.vertices.Length; i++)
