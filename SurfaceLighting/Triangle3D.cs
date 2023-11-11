@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SurfaceLighting
 {
-    internal class Triangle3D
+    internal class Triangle3D : IPolygon3D
     {
-        public Point3D[] vertices = new Point3D[3];
-        public float[] normals = new float[3];
+        public Point3D[] vertices { get; set; }  = new Point3D[3];
+        public Vector3[] normalVectors = new Vector3[3];
 
         public Triangle3D(float p1X, float p1Y, float p2X, float p2Y,
             float p3X, float p3Y)
@@ -34,5 +35,6 @@ namespace SurfaceLighting
             vertices2D[2] = new PointF(vertices[2].x, vertices[2].y);
             return vertices2D;
         }
+
     }
 }

@@ -45,6 +45,8 @@ namespace SurfaceLighting
             return result;
         }
 
+        #region scaling
+
         public PointF scalePoint(PointF point) 
         {
             float scaledX = point.X * (Width - 1);
@@ -64,6 +66,8 @@ namespace SurfaceLighting
             return new Triangle3D(scalePoint(t.vertices[0]), scalePoint(t.vertices[1]),
                 scalePoint(t.vertices[2]));
         }
+
+        #endregion
 
         public void Dispose()
         {
