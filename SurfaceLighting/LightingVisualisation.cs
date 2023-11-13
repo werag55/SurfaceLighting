@@ -30,13 +30,13 @@ namespace SurfaceLighting
             visualisationBM = new DirectBitmap(size, size);
             g = Graphics.FromImage(visualisationBM.Bitmap);
 
-            //Parallel.ForEach (tg.triangles, triangle =>
-            //    fillPolygon(visualisationBM.scaleTriangle(triangle)));
+            Parallel.ForEach(tg.triangles, triangle =>
+                fillPolygon(triangle));
 
             ///////////////////////////
             ///
-            foreach(var triangle in tg.triangles)
-                fillPolygon(triangle);
+            //foreach (var triangle in tg.triangles)
+            //    fillPolygon(triangle);
         }
 
         #region fillPolygon
