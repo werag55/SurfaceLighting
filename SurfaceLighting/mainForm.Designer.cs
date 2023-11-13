@@ -33,17 +33,51 @@
             ssToolStripMenuItem = new ToolStripMenuItem();
             tableLayoutPanel = new TableLayoutPanel();
             parametersPanel = new Panel();
+            parametersTableLayoutPanel = new TableLayoutPanel();
+            triangleGridPanel = new Panel();
+            triangulationTrackBar = new TrackBar();
+            triangleGridLabel = new Label();
+            triangleGridCheckBox = new CheckBox();
+            coefficientsPanel = new Panel();
+            mTrackBar = new TrackBar();
+            mLabel = new Label();
+            ksTrackBar = new TrackBar();
+            ksLabel = new Label();
+            kdTrackBar = new TrackBar();
+            kdLabel = new Label();
+            IoPanel = new Panel();
+            imageRadioButton = new RadioButton();
+            solidColorRadioButton = new RadioButton();
+            IoLabel = new Label();
+            controlPointsPanel = new Panel();
+            zControlPointTrackBar = new TrackBar();
+            controlPointsCheckBox = new CheckBox();
+            controlPointsLabel = new Label();
             visualisationPanel = new Panel();
+            normalMapPanel = new Panel();
+            normalMapCheckBox = new CheckBox();
             menuStrip.SuspendLayout();
             tableLayoutPanel.SuspendLayout();
+            parametersPanel.SuspendLayout();
+            parametersTableLayoutPanel.SuspendLayout();
+            triangleGridPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)triangulationTrackBar).BeginInit();
+            coefficientsPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)mTrackBar).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ksTrackBar).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)kdTrackBar).BeginInit();
+            IoPanel.SuspendLayout();
+            controlPointsPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)zControlPointTrackBar).BeginInit();
+            normalMapPanel.SuspendLayout();
             SuspendLayout();
             // 
             // statusStrip
             // 
             statusStrip.ImageScalingSize = new Size(24, 24);
-            statusStrip.Location = new Point(0, 1186);
+            statusStrip.Location = new Point(0, 1192);
             statusStrip.Name = "statusStrip";
-            statusStrip.Size = new Size(1678, 28);
+            statusStrip.Size = new Size(1678, 22);
             statusStrip.SizingGrip = false;
             statusStrip.TabIndex = 0;
             // 
@@ -75,17 +109,240 @@
             tableLayoutPanel.Name = "tableLayoutPanel";
             tableLayoutPanel.RowCount = 1;
             tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel.Size = new Size(1678, 1153);
+            tableLayoutPanel.Size = new Size(1678, 1159);
             tableLayoutPanel.TabIndex = 2;
             // 
             // parametersPanel
             // 
             parametersPanel.BackColor = Color.Snow;
+            parametersPanel.Controls.Add(parametersTableLayoutPanel);
             parametersPanel.Dock = DockStyle.Fill;
             parametersPanel.Location = new Point(1160, 3);
             parametersPanel.Name = "parametersPanel";
-            parametersPanel.Size = new Size(515, 1147);
+            parametersPanel.Size = new Size(515, 1153);
             parametersPanel.TabIndex = 0;
+            // 
+            // parametersTableLayoutPanel
+            // 
+            parametersTableLayoutPanel.ColumnCount = 1;
+            parametersTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            parametersTableLayoutPanel.Controls.Add(triangleGridPanel, 0, 1);
+            parametersTableLayoutPanel.Controls.Add(coefficientsPanel, 0, 2);
+            parametersTableLayoutPanel.Controls.Add(IoPanel, 0, 3);
+            parametersTableLayoutPanel.Controls.Add(controlPointsPanel, 0, 0);
+            parametersTableLayoutPanel.Controls.Add(normalMapPanel, 0, 4);
+            parametersTableLayoutPanel.Dock = DockStyle.Fill;
+            parametersTableLayoutPanel.Location = new Point(0, 0);
+            parametersTableLayoutPanel.Name = "parametersTableLayoutPanel";
+            parametersTableLayoutPanel.RowCount = 6;
+            parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 47.0394745F));
+            parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 52.9605255F));
+            parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 343F));
+            parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 156F));
+            parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 64F));
+            parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 305F));
+            parametersTableLayoutPanel.Size = new Size(515, 1153);
+            parametersTableLayoutPanel.TabIndex = 0;
+            // 
+            // triangleGridPanel
+            // 
+            triangleGridPanel.BorderStyle = BorderStyle.FixedSingle;
+            triangleGridPanel.Controls.Add(triangulationTrackBar);
+            triangleGridPanel.Controls.Add(triangleGridLabel);
+            triangleGridPanel.Controls.Add(triangleGridCheckBox);
+            triangleGridPanel.Dock = DockStyle.Fill;
+            triangleGridPanel.Location = new Point(3, 137);
+            triangleGridPanel.Name = "triangleGridPanel";
+            triangleGridPanel.Size = new Size(509, 144);
+            triangleGridPanel.TabIndex = 1;
+            // 
+            // triangulationTrackBar
+            // 
+            triangulationTrackBar.Location = new Point(4, 98);
+            triangulationTrackBar.Maximum = 15;
+            triangulationTrackBar.Name = "triangulationTrackBar";
+            triangulationTrackBar.Size = new Size(499, 69);
+            triangulationTrackBar.TabIndex = 5;
+            // 
+            // triangleGridLabel
+            // 
+            triangleGridLabel.AutoSize = true;
+            triangleGridLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            triangleGridLabel.Location = new Point(4, 58);
+            triangleGridLabel.Name = "triangleGridLabel";
+            triangleGridLabel.Size = new Size(210, 28);
+            triangleGridLabel.TabIndex = 4;
+            triangleGridLabel.Text = "Triangulation accuracy:";
+            // 
+            // triangleGridCheckBox
+            // 
+            triangleGridCheckBox.AutoSize = true;
+            triangleGridCheckBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            triangleGridCheckBox.Location = new Point(4, 3);
+            triangleGridCheckBox.Name = "triangleGridCheckBox";
+            triangleGridCheckBox.Size = new Size(173, 36);
+            triangleGridCheckBox.TabIndex = 2;
+            triangleGridCheckBox.Text = "Triangle grid\r\n";
+            triangleGridCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // coefficientsPanel
+            // 
+            coefficientsPanel.BorderStyle = BorderStyle.FixedSingle;
+            coefficientsPanel.Controls.Add(mTrackBar);
+            coefficientsPanel.Controls.Add(mLabel);
+            coefficientsPanel.Controls.Add(ksTrackBar);
+            coefficientsPanel.Controls.Add(ksLabel);
+            coefficientsPanel.Controls.Add(kdTrackBar);
+            coefficientsPanel.Controls.Add(kdLabel);
+            coefficientsPanel.Dock = DockStyle.Fill;
+            coefficientsPanel.Location = new Point(3, 287);
+            coefficientsPanel.Name = "coefficientsPanel";
+            coefficientsPanel.Size = new Size(509, 337);
+            coefficientsPanel.TabIndex = 2;
+            // 
+            // mTrackBar
+            // 
+            mTrackBar.Location = new Point(4, 274);
+            mTrackBar.Maximum = 100;
+            mTrackBar.Name = "mTrackBar";
+            mTrackBar.Size = new Size(499, 69);
+            mTrackBar.TabIndex = 10;
+            // 
+            // mLabel
+            // 
+            mLabel.AutoSize = true;
+            mLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            mLabel.Location = new Point(4, 229);
+            mLabel.Name = "mLabel";
+            mLabel.Size = new Size(236, 28);
+            mLabel.TabIndex = 9;
+            mLabel.Text = "Mirroring of the triangles:";
+            // 
+            // ksTrackBar
+            // 
+            ksTrackBar.Location = new Point(4, 178);
+            ksTrackBar.Maximum = 1;
+            ksTrackBar.Name = "ksTrackBar";
+            ksTrackBar.Size = new Size(499, 69);
+            ksTrackBar.TabIndex = 8;
+            // 
+            // ksLabel
+            // 
+            ksLabel.AutoSize = true;
+            ksLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            ksLabel.Location = new Point(4, 135);
+            ksLabel.Name = "ksLabel";
+            ksLabel.Size = new Size(333, 28);
+            ksLabel.TabIndex = 7;
+            ksLabel.Text = "Influence of the specular component:";
+            // 
+            // kdTrackBar
+            // 
+            kdTrackBar.Location = new Point(4, 84);
+            kdTrackBar.Maximum = 1;
+            kdTrackBar.Name = "kdTrackBar";
+            kdTrackBar.Size = new Size(499, 69);
+            kdTrackBar.TabIndex = 6;
+            // 
+            // kdLabel
+            // 
+            kdLabel.AutoSize = true;
+            kdLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            kdLabel.Location = new Point(4, 11);
+            kdLabel.Name = "kdLabel";
+            kdLabel.Size = new Size(485, 56);
+            kdLabel.TabIndex = 5;
+            kdLabel.Text = "Influence of the diffuse component of the illumination \r\nrmodel (Lambert model):";
+            // 
+            // IoPanel
+            // 
+            IoPanel.BorderStyle = BorderStyle.FixedSingle;
+            IoPanel.Controls.Add(imageRadioButton);
+            IoPanel.Controls.Add(solidColorRadioButton);
+            IoPanel.Controls.Add(IoLabel);
+            IoPanel.Dock = DockStyle.Fill;
+            IoPanel.Location = new Point(3, 630);
+            IoPanel.Name = "IoPanel";
+            IoPanel.Size = new Size(509, 150);
+            IoPanel.TabIndex = 3;
+            // 
+            // imageRadioButton
+            // 
+            imageRadioButton.AutoSize = true;
+            imageRadioButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            imageRadioButton.Location = new Point(21, 92);
+            imageRadioButton.Name = "imageRadioButton";
+            imageRadioButton.Size = new Size(91, 32);
+            imageRadioButton.TabIndex = 2;
+            imageRadioButton.TabStop = true;
+            imageRadioButton.Text = "Image";
+            imageRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // solidColorRadioButton
+            // 
+            solidColorRadioButton.AutoSize = true;
+            solidColorRadioButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            solidColorRadioButton.Location = new Point(21, 54);
+            solidColorRadioButton.Name = "solidColorRadioButton";
+            solidColorRadioButton.Size = new Size(132, 32);
+            solidColorRadioButton.TabIndex = 1;
+            solidColorRadioButton.TabStop = true;
+            solidColorRadioButton.Text = "Solid color";
+            solidColorRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // IoLabel
+            // 
+            IoLabel.AutoSize = true;
+            IoLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            IoLabel.Location = new Point(4, 9);
+            IoLabel.Name = "IoLabel";
+            IoLabel.Size = new Size(220, 32);
+            IoLabel.TabIndex = 0;
+            IoLabel.Text = "Color of the object:";
+            // 
+            // controlPointsPanel
+            // 
+            controlPointsPanel.BorderStyle = BorderStyle.FixedSingle;
+            controlPointsPanel.Controls.Add(zControlPointTrackBar);
+            controlPointsPanel.Controls.Add(controlPointsCheckBox);
+            controlPointsPanel.Controls.Add(controlPointsLabel);
+            controlPointsPanel.Dock = DockStyle.Fill;
+            controlPointsPanel.Location = new Point(3, 3);
+            controlPointsPanel.Name = "controlPointsPanel";
+            controlPointsPanel.Size = new Size(509, 128);
+            controlPointsPanel.TabIndex = 4;
+            // 
+            // zControlPointTrackBar
+            // 
+            zControlPointTrackBar.BackColor = Color.Snow;
+            zControlPointTrackBar.Enabled = false;
+            zControlPointTrackBar.Location = new Point(3, 85);
+            zControlPointTrackBar.Maximum = 2;
+            zControlPointTrackBar.Name = "zControlPointTrackBar";
+            zControlPointTrackBar.Size = new Size(501, 69);
+            zControlPointTrackBar.TabIndex = 2;
+            zControlPointTrackBar.Scroll += zControlPointTrackBar_Scroll;
+            // 
+            // controlPointsCheckBox
+            // 
+            controlPointsCheckBox.AutoSize = true;
+            controlPointsCheckBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            controlPointsCheckBox.Location = new Point(3, 3);
+            controlPointsCheckBox.Name = "controlPointsCheckBox";
+            controlPointsCheckBox.Size = new Size(359, 36);
+            controlPointsCheckBox.TabIndex = 1;
+            controlPointsCheckBox.Text = "Bezier surface's control points";
+            controlPointsCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // controlPointsLabel
+            // 
+            controlPointsLabel.AutoSize = true;
+            controlPointsLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            controlPointsLabel.Location = new Point(3, 54);
+            controlPointsLabel.Name = "controlPointsLabel";
+            controlPointsLabel.Size = new Size(379, 28);
+            controlPointsLabel.TabIndex = 3;
+            controlPointsLabel.Text = "Z coordinate of the selected control point:";
             // 
             // visualisationPanel
             // 
@@ -93,10 +350,31 @@
             visualisationPanel.Dock = DockStyle.Fill;
             visualisationPanel.Location = new Point(3, 3);
             visualisationPanel.Name = "visualisationPanel";
-            visualisationPanel.Size = new Size(1151, 1147);
+            visualisationPanel.Size = new Size(1151, 1153);
             visualisationPanel.TabIndex = 0;
             visualisationPanel.SizeChanged += visualisationPanel_SizeChanged;
             visualisationPanel.Paint += visualisationPanel_Paint;
+            // 
+            // normalMapPanel
+            // 
+            normalMapPanel.BorderStyle = BorderStyle.FixedSingle;
+            normalMapPanel.Controls.Add(normalMapCheckBox);
+            normalMapPanel.Dock = DockStyle.Fill;
+            normalMapPanel.Location = new Point(3, 786);
+            normalMapPanel.Name = "normalMapPanel";
+            normalMapPanel.Size = new Size(509, 58);
+            normalMapPanel.TabIndex = 5;
+            // 
+            // normalMapCheckBox
+            // 
+            normalMapCheckBox.AutoSize = true;
+            normalMapCheckBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            normalMapCheckBox.Location = new Point(4, 3);
+            normalMapCheckBox.Name = "normalMapCheckBox";
+            normalMapCheckBox.Size = new Size(167, 36);
+            normalMapCheckBox.TabIndex = 6;
+            normalMapCheckBox.Text = "NormalMap";
+            normalMapCheckBox.UseVisualStyleBackColor = true;
             // 
             // mainForm
             // 
@@ -117,6 +395,23 @@
             menuStrip.ResumeLayout(false);
             menuStrip.PerformLayout();
             tableLayoutPanel.ResumeLayout(false);
+            parametersPanel.ResumeLayout(false);
+            parametersTableLayoutPanel.ResumeLayout(false);
+            triangleGridPanel.ResumeLayout(false);
+            triangleGridPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)triangulationTrackBar).EndInit();
+            coefficientsPanel.ResumeLayout(false);
+            coefficientsPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)mTrackBar).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ksTrackBar).EndInit();
+            ((System.ComponentModel.ISupportInitialize)kdTrackBar).EndInit();
+            IoPanel.ResumeLayout(false);
+            IoPanel.PerformLayout();
+            controlPointsPanel.ResumeLayout(false);
+            controlPointsPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)zControlPointTrackBar).EndInit();
+            normalMapPanel.ResumeLayout(false);
+            normalMapPanel.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -129,5 +424,28 @@
         private TableLayoutPanel tableLayoutPanel;
         private Panel parametersPanel;
         private Panel visualisationPanel;
+        private TableLayoutPanel parametersTableLayoutPanel;
+        private RadioButton controlPointsRadioButton;
+        private CheckBox controlPointsCheckBox;
+        private TrackBar zControlPointTrackBar;
+        private Label controlPointsLabel;
+        private Panel triangleGridPanel;
+        private TrackBar triangulationTrackBar;
+        private Label triangleGridLabel;
+        private CheckBox triangleGridCheckBox;
+        private Panel coefficientsPanel;
+        private Label kdLabel;
+        private Label ksLabel;
+        private TrackBar kdTrackBar;
+        private TrackBar ksTrackBar;
+        private TrackBar mTrackBar;
+        private Label mLabel;
+        private Panel IoPanel;
+        private Label IoLabel;
+        private RadioButton imageRadioButton;
+        private RadioButton solidColorRadioButton;
+        private Panel controlPointsPanel;
+        private Panel normalMapPanel;
+        private CheckBox normalMapCheckBox;
     }
 }

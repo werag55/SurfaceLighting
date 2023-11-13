@@ -139,7 +139,7 @@ namespace SurfaceLighting
         #region color finding
 
         public float kd = 0.5f, ks = 1; // coefficients describing the influence of a given component (the diffuse component of the illumination 
-                                     // rmodel (Lambert model) and the specular component, respectively on the result (0 - 1)
+                                     // rmodel (Lambert model) and the specular component, respectively) on the result (0 - 1)
         public float[] Il = { 1, 1, 1 }; // light color scaled to 0-1 (white by default)
         Vector3 V = new Vector3(0, 0, 1);
         public int m = 50; // coefficient describing how much a given triangle is mirrored (1-100)

@@ -16,7 +16,7 @@ namespace SurfaceLighting
         }
 
         private void visualisationPanel_Paint(object sender, PaintEventArgs e)
-        { 
+        {
 
             e.Graphics.DrawImage(lightingVisualisation.bezeierSurface.controlPointsBM.Bitmap, Point.Empty);
             e.Graphics.DrawImage(lightingVisualisation.bezeierSurface.triangleGrid.triangleGridBM.Bitmap, Point.Empty);
@@ -26,6 +26,16 @@ namespace SurfaceLighting
         private void visualisationPanel_SizeChanged(object sender, EventArgs e)
         {
             ((Panel)sender).Invalidate();
+        }
+
+        private void controlPointsCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void zControlPointTrackBar_Scroll(object sender, EventArgs e)
+        {
+
         }
     }
 }
