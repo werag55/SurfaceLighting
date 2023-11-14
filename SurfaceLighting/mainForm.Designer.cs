@@ -34,6 +34,10 @@
             tableLayoutPanel = new TableLayoutPanel();
             parametersPanel = new Panel();
             parametersTableLayoutPanel = new TableLayoutPanel();
+            normalMapPanel = new Panel();
+            normalMapButton = new Button();
+            normalMapCheckBox = new CheckBox();
+            textBox1 = new TextBox();
             triangleGridPanel = new Panel();
             triangulationTrackBar = new TrackBar();
             triangleGridLabel = new Label();
@@ -46,6 +50,8 @@
             kdTrackBar = new TrackBar();
             kdLabel = new Label();
             IoPanel = new Panel();
+            objectImageButton = new Button();
+            objectColorButton = new Button();
             imageRadioButton = new RadioButton();
             solidColorRadioButton = new RadioButton();
             IoLabel = new Label();
@@ -53,14 +59,15 @@
             zControlPointTrackBar = new TrackBar();
             controlPointsCheckBox = new CheckBox();
             controlPointsLabel = new Label();
-            normalMapPanel = new Panel();
-            normalMapCheckBox = new CheckBox();
-            textBox1 = new TextBox();
+            lightColorPanel = new Panel();
+            lightColorButton = new Button();
+            lightColorLabel = new Label();
             visualisationPictureBox = new PictureBox();
             menuStrip.SuspendLayout();
             tableLayoutPanel.SuspendLayout();
             parametersPanel.SuspendLayout();
             parametersTableLayoutPanel.SuspendLayout();
+            normalMapPanel.SuspendLayout();
             triangleGridPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)triangulationTrackBar).BeginInit();
             coefficientsPanel.SuspendLayout();
@@ -70,7 +77,7 @@
             IoPanel.SuspendLayout();
             controlPointsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)zControlPointTrackBar).BeginInit();
-            normalMapPanel.SuspendLayout();
+            lightColorPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)visualisationPictureBox).BeginInit();
             SuspendLayout();
             // 
@@ -128,24 +135,68 @@
             // 
             parametersTableLayoutPanel.ColumnCount = 1;
             parametersTableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            parametersTableLayoutPanel.Controls.Add(normalMapPanel, 0, 5);
+            parametersTableLayoutPanel.Controls.Add(textBox1, 0, 6);
             parametersTableLayoutPanel.Controls.Add(triangleGridPanel, 0, 1);
             parametersTableLayoutPanel.Controls.Add(coefficientsPanel, 0, 2);
             parametersTableLayoutPanel.Controls.Add(IoPanel, 0, 3);
             parametersTableLayoutPanel.Controls.Add(controlPointsPanel, 0, 0);
-            parametersTableLayoutPanel.Controls.Add(normalMapPanel, 0, 4);
-            parametersTableLayoutPanel.Controls.Add(textBox1, 0, 5);
+            parametersTableLayoutPanel.Controls.Add(lightColorPanel, 0, 4);
             parametersTableLayoutPanel.Dock = DockStyle.Fill;
             parametersTableLayoutPanel.Location = new Point(0, 0);
             parametersTableLayoutPanel.Name = "parametersTableLayoutPanel";
-            parametersTableLayoutPanel.RowCount = 6;
+            parametersTableLayoutPanel.RowCount = 7;
             parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 47.0394745F));
             parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 52.9605255F));
             parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 343F));
             parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 156F));
             parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 64F));
-            parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 305F));
+            parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 60F));
+            parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 265F));
             parametersTableLayoutPanel.Size = new Size(515, 1153);
             parametersTableLayoutPanel.TabIndex = 0;
+            // 
+            // normalMapPanel
+            // 
+            normalMapPanel.BorderStyle = BorderStyle.FixedSingle;
+            normalMapPanel.Controls.Add(normalMapButton);
+            normalMapPanel.Controls.Add(normalMapCheckBox);
+            normalMapPanel.Dock = DockStyle.Fill;
+            normalMapPanel.Location = new Point(3, 830);
+            normalMapPanel.Name = "normalMapPanel";
+            normalMapPanel.Size = new Size(509, 54);
+            normalMapPanel.TabIndex = 9;
+            // 
+            // normalMapButton
+            // 
+            normalMapButton.Enabled = false;
+            normalMapButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            normalMapButton.Location = new Point(211, 5);
+            normalMapButton.Name = "normalMapButton";
+            normalMapButton.Size = new Size(112, 34);
+            normalMapButton.TabIndex = 10;
+            normalMapButton.Text = "Select...";
+            normalMapButton.UseVisualStyleBackColor = true;
+            // 
+            // normalMapCheckBox
+            // 
+            normalMapCheckBox.AutoSize = true;
+            normalMapCheckBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            normalMapCheckBox.Location = new Point(-1, 3);
+            normalMapCheckBox.Name = "normalMapCheckBox";
+            normalMapCheckBox.Size = new Size(167, 36);
+            normalMapCheckBox.TabIndex = 6;
+            normalMapCheckBox.Text = "NormalMap";
+            normalMapCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // textBox1
+            // 
+            textBox1.Dock = DockStyle.Fill;
+            textBox1.Location = new Point(3, 890);
+            textBox1.Multiline = true;
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(509, 260);
+            textBox1.TabIndex = 7;
             // 
             // triangleGridPanel
             // 
@@ -154,9 +205,9 @@
             triangleGridPanel.Controls.Add(triangleGridLabel);
             triangleGridPanel.Controls.Add(triangleGridCheckBox);
             triangleGridPanel.Dock = DockStyle.Fill;
-            triangleGridPanel.Location = new Point(3, 137);
+            triangleGridPanel.Location = new Point(3, 127);
             triangleGridPanel.Name = "triangleGridPanel";
-            triangleGridPanel.Size = new Size(509, 144);
+            triangleGridPanel.Size = new Size(509, 134);
             triangleGridPanel.TabIndex = 1;
             // 
             // triangulationTrackBar
@@ -202,7 +253,7 @@
             coefficientsPanel.Controls.Add(kdTrackBar);
             coefficientsPanel.Controls.Add(kdLabel);
             coefficientsPanel.Dock = DockStyle.Fill;
-            coefficientsPanel.Location = new Point(3, 287);
+            coefficientsPanel.Location = new Point(3, 267);
             coefficientsPanel.Name = "coefficientsPanel";
             coefficientsPanel.Size = new Size(509, 337);
             coefficientsPanel.TabIndex = 2;
@@ -265,14 +316,36 @@
             // IoPanel
             // 
             IoPanel.BorderStyle = BorderStyle.FixedSingle;
+            IoPanel.Controls.Add(objectImageButton);
+            IoPanel.Controls.Add(objectColorButton);
             IoPanel.Controls.Add(imageRadioButton);
             IoPanel.Controls.Add(solidColorRadioButton);
             IoPanel.Controls.Add(IoLabel);
             IoPanel.Dock = DockStyle.Fill;
-            IoPanel.Location = new Point(3, 630);
+            IoPanel.Location = new Point(3, 610);
             IoPanel.Name = "IoPanel";
             IoPanel.Size = new Size(509, 150);
             IoPanel.TabIndex = 3;
+            // 
+            // objectImageButton
+            // 
+            objectImageButton.Enabled = false;
+            objectImageButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            objectImageButton.Location = new Point(211, 94);
+            objectImageButton.Name = "objectImageButton";
+            objectImageButton.Size = new Size(112, 34);
+            objectImageButton.TabIndex = 9;
+            objectImageButton.Text = "Select...";
+            objectImageButton.UseVisualStyleBackColor = true;
+            // 
+            // objectColorButton
+            // 
+            objectColorButton.Location = new Point(211, 54);
+            objectColorButton.Name = "objectColorButton";
+            objectColorButton.Size = new Size(34, 34);
+            objectColorButton.TabIndex = 8;
+            objectColorButton.UseVisualStyleBackColor = true;
+            objectColorButton.Click += objectColorButton_Click;
             // 
             // imageRadioButton
             // 
@@ -282,13 +355,14 @@
             imageRadioButton.Name = "imageRadioButton";
             imageRadioButton.Size = new Size(91, 32);
             imageRadioButton.TabIndex = 2;
-            imageRadioButton.TabStop = true;
             imageRadioButton.Text = "Image";
             imageRadioButton.UseVisualStyleBackColor = true;
+            imageRadioButton.CheckedChanged += imageRadioButton_CheckedChanged;
             // 
             // solidColorRadioButton
             // 
             solidColorRadioButton.AutoSize = true;
+            solidColorRadioButton.Checked = true;
             solidColorRadioButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
             solidColorRadioButton.Location = new Point(21, 54);
             solidColorRadioButton.Name = "solidColorRadioButton";
@@ -317,7 +391,7 @@
             controlPointsPanel.Dock = DockStyle.Fill;
             controlPointsPanel.Location = new Point(3, 3);
             controlPointsPanel.Name = "controlPointsPanel";
-            controlPointsPanel.Size = new Size(509, 128);
+            controlPointsPanel.Size = new Size(509, 118);
             controlPointsPanel.TabIndex = 4;
             // 
             // zControlPointTrackBar
@@ -353,35 +427,34 @@
             controlPointsLabel.TabIndex = 3;
             controlPointsLabel.Text = "Z coordinate of the selected control point:";
             // 
-            // normalMapPanel
+            // lightColorPanel
             // 
-            normalMapPanel.BorderStyle = BorderStyle.FixedSingle;
-            normalMapPanel.Controls.Add(normalMapCheckBox);
-            normalMapPanel.Dock = DockStyle.Fill;
-            normalMapPanel.Location = new Point(3, 786);
-            normalMapPanel.Name = "normalMapPanel";
-            normalMapPanel.Size = new Size(509, 58);
-            normalMapPanel.TabIndex = 5;
+            lightColorPanel.BorderStyle = BorderStyle.FixedSingle;
+            lightColorPanel.Controls.Add(lightColorButton);
+            lightColorPanel.Controls.Add(lightColorLabel);
+            lightColorPanel.Dock = DockStyle.Fill;
+            lightColorPanel.Location = new Point(3, 766);
+            lightColorPanel.Name = "lightColorPanel";
+            lightColorPanel.Size = new Size(509, 58);
+            lightColorPanel.TabIndex = 10;
             // 
-            // normalMapCheckBox
+            // lightColorButton
             // 
-            normalMapCheckBox.AutoSize = true;
-            normalMapCheckBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            normalMapCheckBox.Location = new Point(4, 3);
-            normalMapCheckBox.Name = "normalMapCheckBox";
-            normalMapCheckBox.Size = new Size(167, 36);
-            normalMapCheckBox.TabIndex = 6;
-            normalMapCheckBox.Text = "NormalMap";
-            normalMapCheckBox.UseVisualStyleBackColor = true;
+            lightColorButton.Location = new Point(211, 10);
+            lightColorButton.Name = "lightColorButton";
+            lightColorButton.Size = new Size(34, 34);
+            lightColorButton.TabIndex = 7;
+            lightColorButton.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // lightColorLabel
             // 
-            textBox1.Dock = DockStyle.Fill;
-            textBox1.Location = new Point(3, 850);
-            textBox1.Multiline = true;
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(509, 300);
-            textBox1.TabIndex = 6;
+            lightColorLabel.AutoSize = true;
+            lightColorLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            lightColorLabel.Location = new Point(3, 9);
+            lightColorLabel.Name = "lightColorLabel";
+            lightColorLabel.Size = new Size(202, 32);
+            lightColorLabel.TabIndex = 1;
+            lightColorLabel.Text = "Color of the light:";
             // 
             // visualisationPictureBox
             // 
@@ -416,6 +489,8 @@
             parametersPanel.ResumeLayout(false);
             parametersTableLayoutPanel.ResumeLayout(false);
             parametersTableLayoutPanel.PerformLayout();
+            normalMapPanel.ResumeLayout(false);
+            normalMapPanel.PerformLayout();
             triangleGridPanel.ResumeLayout(false);
             triangleGridPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)triangulationTrackBar).EndInit();
@@ -429,8 +504,8 @@
             controlPointsPanel.ResumeLayout(false);
             controlPointsPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)zControlPointTrackBar).EndInit();
-            normalMapPanel.ResumeLayout(false);
-            normalMapPanel.PerformLayout();
+            lightColorPanel.ResumeLayout(false);
+            lightColorPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)visualisationPictureBox).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -465,9 +540,15 @@
         private RadioButton imageRadioButton;
         private RadioButton solidColorRadioButton;
         private Panel controlPointsPanel;
-        private Panel normalMapPanel;
         private CheckBox normalMapCheckBox;
-        private TextBox textBox1;
         private PictureBox visualisationPictureBox;
+        private TextBox textBox1;
+        private Panel normalMapPanel;
+        private Button normalMapButton;
+        private Button objectImageButton;
+        private Button objectColorButton;
+        private Panel lightColorPanel;
+        private Button lightColorButton;
+        private Label lightColorLabel;
     }
 }

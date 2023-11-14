@@ -64,7 +64,7 @@ namespace SurfaceLighting
 
         public float scaleY(float y)
         {
-            return (y * (Width - 1)) > 0 ? (y * (Width - 1)) : 0;//((1 - y) * (Height - 1)) > 0 ? ((1 - y) * (Height - 1)) : 0;
+            return ((1 - y) * (Height - 1)) > 0 ? ((1 - y) * (Height - 1)) : 0;
         }
 
         public float reScaleX(float x)
@@ -74,7 +74,7 @@ namespace SurfaceLighting
 
         public float reScaleY(float y)
         {
-            return (y / (Width - 1)) > 0 ? (y / (Width - 1)) : 0;//(1 - y / (Height - 1)) > 0 ? (1 - y / (Height - 1)) : 0;
+            return (1 - y / (Height - 1)) > 0 ? (1 - y / (Height - 1)) : 0;
         }
 
         public Triangle3D scaleTriangle(Triangle3D t)

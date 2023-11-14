@@ -6,6 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms.VisualStyles;
 
+public enum ObjColor
+{
+    Solid,
+    Image
+}
+
 namespace SurfaceLighting
 { 
     internal class LightingVisualisation
@@ -157,6 +163,9 @@ namespace SurfaceLighting
         public int m = 60; // coefficient describing how much a given triangle is mirrored (1-100)
         Point3D lightSource = new Point3D(0.66f, 0.33f, 3);
 
+        public ObjColor objColor { get; set; }
+        public float[] Io = { 0, 128f / 255, 0 }; // object color scaled to 0-1 (green by default)
+
         #region setters
 
         public void setKd(float newKd)
@@ -264,7 +273,14 @@ namespace SurfaceLighting
 
             float z = interpolateZ(barycCoord, t);
             Vector3 N = Vector3.Normalize(interpolateNormalVector(barycCoord, t));
-            float[] Io = { (float)0 / 255, (float)128/255, (float)0  / 255 }; // object color scaled to 0-1
+
+            float[] Io = { 0, 0, 0 };
+            if (objColor == ObjColor.Solid)
+                Io = this.Io;
+            else
+                throw (new NotImplementedException()); //get from image
+
+
             Vector3 L = Vector3.Normalize(new Vector3(lightSource.x - x, lightSource.y - y, lightSource.z - z)); // versor to light source
             Vector3 R = 2 * Vector3.Dot(N, L) * N - L;
 

@@ -1,5 +1,6 @@
 using System.Drawing;
 using System.Security.Policy;
+using System.Windows.Forms;
 
 namespace SurfaceLighting
 {
@@ -60,8 +61,6 @@ namespace SurfaceLighting
 
         #endregion
 
-        #endregion
-
         private void visualisationPictureBox_Click(object sender, EventArgs e)
         {
 
@@ -100,7 +99,7 @@ namespace SurfaceLighting
 
         #endregion
 
-        #region parameters
+        #region light parameters
 
         private void kdTrackBar_Scroll(object sender, EventArgs e)
         {
@@ -120,6 +119,43 @@ namespace SurfaceLighting
             visualisationPictureBox.Invalidate();
         }
 
+        #endregion
+
+        #region object color
+
+        private void objectColorButton_Click(object sender, EventArgs e)
+        {
+            ColorDialog colorDialog = new ColorDialog();
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                objectColorButton.BackColor = colorDialog.Color;
+                lightingVisualisation.Io = new float[] { (float)colorDialog.Color.R / 255,
+                    (float)colorDialog.Color.G / 255, (float)colorDialog.Color.B / 255};
+                lightingVisualisation.initBitmap();
+                visualisationPictureBox.Invalidate();
+            }
+        }
+
+        private void imageRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (imageRadioButton.Checked)
+            {
+                objectColorButton.Enabled = false;
+                objectImageButton.Enabled = true;
+
+                lightingVisualisation.objColor = ObjColor.Image;
+            }
+
+            if (solidColorRadioButton.Checked)
+            {
+                objectColorButton.Enabled = true;
+                objectImageButton.Enabled = false;
+
+                lightingVisualisation.objColor = ObjColor.Solid;
+            }
+        }
+
+        #endregion
 
         #endregion
     }
