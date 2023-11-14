@@ -336,6 +336,7 @@
             objectImageButton.TabIndex = 9;
             objectImageButton.Text = "Select...";
             objectImageButton.UseVisualStyleBackColor = true;
+            objectImageButton.Click += objectImageButton_Click;
             // 
             // objectColorButton
             // 

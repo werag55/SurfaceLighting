@@ -1,6 +1,9 @@
+using Microsoft.VisualBasic.ApplicationServices;
 using System.Drawing;
+using System.Security;
 using System.Security.Policy;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace SurfaceLighting
 {
@@ -129,9 +132,20 @@ namespace SurfaceLighting
             if (colorDialog.ShowDialog() == DialogResult.OK)
             {
                 objectColorButton.BackColor = colorDialog.Color;
-                lightingVisualisation.Io = new float[] { (float)colorDialog.Color.R / 255,
-                    (float)colorDialog.Color.G / 255, (float)colorDialog.Color.B / 255};
-                lightingVisualisation.initBitmap();
+                lightingVisualisation.setIo(colorDialog.Color);
+                visualisationPictureBox.Invalidate();
+            }
+        }
+
+        private void objectImageButton_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new();
+            openFileDialog.InitialDirectory = @"SolutionPath\Images\";//@"..\..\..\Images";
+            openFileDialog.Filter = "Images (*.jpg, *.jpeg, *.png, *.gif)|*.jpg;*.jpeg;*.png;*.gif"; //|Wszystkie pliki (*.*)|*.*";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                lightingVisualisation.setImage(openFileDialog.FileName);
                 visualisationPictureBox.Invalidate();
             }
         }
@@ -143,7 +157,7 @@ namespace SurfaceLighting
                 objectColorButton.Enabled = false;
                 objectImageButton.Enabled = true;
 
-                lightingVisualisation.objColor = ObjColor.Image;
+                lightingVisualisation.setObjColor(ObjColor.Image);
             }
 
             if (solidColorRadioButton.Checked)
@@ -151,8 +165,10 @@ namespace SurfaceLighting
                 objectColorButton.Enabled = true;
                 objectImageButton.Enabled = false;
 
-                lightingVisualisation.objColor = ObjColor.Solid;
+                lightingVisualisation.setObjColor(ObjColor.Solid);
             }
+
+            visualisationPictureBox.Invalidate();
         }
 
         #endregion
@@ -165,9 +181,7 @@ namespace SurfaceLighting
             if (colorDialog.ShowDialog() == DialogResult.OK)
             {
                 lightColorButton.BackColor = colorDialog.Color;
-                lightingVisualisation.Il = new float[] { (float)colorDialog.Color.R / 255,
-                    (float)colorDialog.Color.G / 255, (float)colorDialog.Color.B / 255};
-                lightingVisualisation.initBitmap();
+                lightingVisualisation.setIl(colorDialog.Color);
                 visualisationPictureBox.Invalidate();
             }
         }

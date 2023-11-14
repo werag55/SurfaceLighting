@@ -28,6 +28,27 @@ namespace SurfaceLighting
             Bitmap = new Bitmap(width, height, width * 4, PixelFormat.Format32bppPArgb, BitsHandle.AddrOfPinnedObject());
         }
 
+        public DirectBitmap(int size, string filePath)
+        {
+            Image ig = Image.FromFile(filePath);
+            Bitmap temp = new Bitmap(ig, size, size);
+
+            Width = size;
+            Height = size;
+            Bits = new Int32[(Width + 1) * (Height + 1)]; //[width  * height];
+            BitsHandle = GCHandle.Alloc(Bits, GCHandleType.Pinned);
+            Bitmap = new Bitmap(Width, Height, Width * 4, PixelFormat.Format32bppPArgb, BitsHandle.AddrOfPinnedObject());
+
+            for (int y = 0; y < size; y++)
+            {
+                for (int x = 0; x < size; x++)
+                {
+                    Color pixelColor = temp.GetPixel(x, y);
+                    SetPixel(x, y, pixelColor);
+                }
+            }
+        }
+
         public void SetPixel(int x, int y, Color colour)
         {
             int index = x + (y * Width);

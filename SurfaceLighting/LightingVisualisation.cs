@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -24,6 +25,7 @@ namespace SurfaceLighting
         {
             bezeierSurface = new BezeierSurface(size);
             initBitmap();
+            setImage(imageFilePath);
         }
 
         public void initBitmap()
@@ -158,13 +160,15 @@ namespace SurfaceLighting
 
         public float kd = 0.2f, ks = 1f; // coefficients describing the influence of a given component (the diffuse component of the illumination 
                                      // rmodel (Lambert model) and the specular component, respectively) on the result (0 - 1)
-        public float[] Il = { 1, 1, 1 }; // light color scaled to 0-1 (white by default)
+        public float[] Il { get; private set; } = { 1, 1, 1 }; // light color scaled to 0-1 (white by default)
         Vector3 V = new Vector3(0, 0, 1);
         public int m = 60; // coefficient describing how much a given triangle is mirrored (1-100)
         Point3D lightSource = new Point3D(0.66f, 0.33f, 3);
 
-        public ObjColor objColor { get; set; }
-        public float[] Io = { 0, 128f / 255, 0 }; // object color scaled to 0-1 (green by default)
+        public ObjColor objColor { get; private set; }
+        public float[] Io { get; set; } = { 0, 128f / 255, 0 }; // object color scaled to 0-1 (green by default)
+        public string imageFilePath = @"..\..\..\Images\cat.jpg";//@"C:\Users\weron\OneDrive\Pulpit\semestr5\gk\proj2\SurfaceLighting\SurfaceLighting\Images\cat.jpg";//@"Images/cat.jpg";
+        private DirectBitmap imageBM;
 
         #region setters
 
@@ -177,6 +181,12 @@ namespace SurfaceLighting
         public void setKs(float newKs)
         {
             ks = newKs;
+            initBitmap();
+        }
+
+        public void setIl(Color c)
+        {
+            Il = new float[] { (float)c.R / 255, (float)c.G / 255, (float)c.B / 255, };
             initBitmap();
         }
 
@@ -195,6 +205,27 @@ namespace SurfaceLighting
         public void setZ(float newZ)
         {
             bezeierSurface.setZ(newZ);
+            initBitmap();
+        }
+
+        public void setObjColor(ObjColor objC)
+        {
+            objColor = objC;
+            initBitmap();
+        }
+
+        public void setIo(Color c)
+        {
+            Io = new float[] { (float)c.R / 255, (float)c.G / 255, (float)c.B / 255, };
+            initBitmap();
+        }
+
+        public void setImage(string filePath)
+        {
+            if (imageBM != null)
+                imageBM.Dispose();
+            imageFilePath = filePath;
+            imageBM = new DirectBitmap(bezeierSurface.size, imageFilePath);
             initBitmap();
         }
 
@@ -274,12 +305,15 @@ namespace SurfaceLighting
             float z = interpolateZ(barycCoord, t);
             Vector3 N = Vector3.Normalize(interpolateNormalVector(barycCoord, t));
 
-            float[] Io = { 0, 0, 0 };
+            float[] Io;
             if (objColor == ObjColor.Solid)
                 Io = this.Io;
             else
-                throw (new NotImplementedException()); //get from image
-
+            {
+                Color pixelColor = imageBM.GetPixel((int)imageBM.scaleX(x), (int)imageBM.scaleY(y));
+                Io = new float[] { (float)(pixelColor.R) / 255, (float)(pixelColor.G) / 255, 
+                    (float)(pixelColor.B) / 255 };
+            }
 
             Vector3 L = Vector3.Normalize(new Vector3(lightSource.x - x, lightSource.y - y, lightSource.z - z)); // versor to light source
             Vector3 R = 2 * Vector3.Dot(N, L) * N - L;
