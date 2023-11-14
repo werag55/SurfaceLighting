@@ -53,9 +53,10 @@
             zControlPointTrackBar = new TrackBar();
             controlPointsCheckBox = new CheckBox();
             controlPointsLabel = new Label();
-            visualisationPanel = new Panel();
             normalMapPanel = new Panel();
             normalMapCheckBox = new CheckBox();
+            textBox1 = new TextBox();
+            visualisationPictureBox = new PictureBox();
             menuStrip.SuspendLayout();
             tableLayoutPanel.SuspendLayout();
             parametersPanel.SuspendLayout();
@@ -70,6 +71,7 @@
             controlPointsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)zControlPointTrackBar).BeginInit();
             normalMapPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)visualisationPictureBox).BeginInit();
             SuspendLayout();
             // 
             // statusStrip
@@ -103,7 +105,7 @@
             tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 521F));
             tableLayoutPanel.Controls.Add(parametersPanel, 1, 0);
-            tableLayoutPanel.Controls.Add(visualisationPanel, 0, 0);
+            tableLayoutPanel.Controls.Add(visualisationPictureBox, 0, 0);
             tableLayoutPanel.Dock = DockStyle.Fill;
             tableLayoutPanel.Location = new Point(0, 33);
             tableLayoutPanel.Name = "tableLayoutPanel";
@@ -131,6 +133,7 @@
             parametersTableLayoutPanel.Controls.Add(IoPanel, 0, 3);
             parametersTableLayoutPanel.Controls.Add(controlPointsPanel, 0, 0);
             parametersTableLayoutPanel.Controls.Add(normalMapPanel, 0, 4);
+            parametersTableLayoutPanel.Controls.Add(textBox1, 0, 5);
             parametersTableLayoutPanel.Dock = DockStyle.Fill;
             parametersTableLayoutPanel.Location = new Point(0, 0);
             parametersTableLayoutPanel.Name = "parametersTableLayoutPanel";
@@ -160,9 +163,12 @@
             // 
             triangulationTrackBar.Location = new Point(4, 98);
             triangulationTrackBar.Maximum = 15;
+            triangulationTrackBar.Minimum = 3;
             triangulationTrackBar.Name = "triangulationTrackBar";
             triangulationTrackBar.Size = new Size(499, 69);
             triangulationTrackBar.TabIndex = 5;
+            triangulationTrackBar.Value = 3;
+            triangulationTrackBar.Scroll += triangulationTrackBar_Scroll;
             // 
             // triangleGridLabel
             // 
@@ -184,6 +190,7 @@
             triangleGridCheckBox.TabIndex = 2;
             triangleGridCheckBox.Text = "Triangle grid\r\n";
             triangleGridCheckBox.UseVisualStyleBackColor = true;
+            triangleGridCheckBox.CheckedChanged += triangleGridCheckBox_CheckedChanged;
             // 
             // coefficientsPanel
             // 
@@ -207,6 +214,7 @@
             mTrackBar.Name = "mTrackBar";
             mTrackBar.Size = new Size(499, 69);
             mTrackBar.TabIndex = 10;
+            mTrackBar.Scroll += mTrackBar_Scroll;
             // 
             // mLabel
             // 
@@ -221,10 +229,10 @@
             // ksTrackBar
             // 
             ksTrackBar.Location = new Point(4, 178);
-            ksTrackBar.Maximum = 1;
             ksTrackBar.Name = "ksTrackBar";
             ksTrackBar.Size = new Size(499, 69);
             ksTrackBar.TabIndex = 8;
+            ksTrackBar.Scroll += ksTrackBar_Scroll;
             // 
             // ksLabel
             // 
@@ -239,10 +247,10 @@
             // kdTrackBar
             // 
             kdTrackBar.Location = new Point(4, 84);
-            kdTrackBar.Maximum = 1;
             kdTrackBar.Name = "kdTrackBar";
             kdTrackBar.Size = new Size(499, 69);
             kdTrackBar.TabIndex = 6;
+            kdTrackBar.Scroll += kdTrackBar_Scroll;
             // 
             // kdLabel
             // 
@@ -317,7 +325,7 @@
             zControlPointTrackBar.BackColor = Color.Snow;
             zControlPointTrackBar.Enabled = false;
             zControlPointTrackBar.Location = new Point(3, 85);
-            zControlPointTrackBar.Maximum = 2;
+            zControlPointTrackBar.Maximum = 20;
             zControlPointTrackBar.Name = "zControlPointTrackBar";
             zControlPointTrackBar.Size = new Size(501, 69);
             zControlPointTrackBar.TabIndex = 2;
@@ -333,6 +341,7 @@
             controlPointsCheckBox.TabIndex = 1;
             controlPointsCheckBox.Text = "Bezier surface's control points";
             controlPointsCheckBox.UseVisualStyleBackColor = true;
+            controlPointsCheckBox.CheckedChanged += controlPointsCheckBox_CheckedChanged;
             // 
             // controlPointsLabel
             // 
@@ -343,17 +352,6 @@
             controlPointsLabel.Size = new Size(379, 28);
             controlPointsLabel.TabIndex = 3;
             controlPointsLabel.Text = "Z coordinate of the selected control point:";
-            // 
-            // visualisationPanel
-            // 
-            visualisationPanel.BackColor = SystemColors.AppWorkspace;
-            visualisationPanel.Dock = DockStyle.Fill;
-            visualisationPanel.Location = new Point(3, 3);
-            visualisationPanel.Name = "visualisationPanel";
-            visualisationPanel.Size = new Size(1151, 1153);
-            visualisationPanel.TabIndex = 0;
-            visualisationPanel.SizeChanged += visualisationPanel_SizeChanged;
-            visualisationPanel.Paint += visualisationPanel_Paint;
             // 
             // normalMapPanel
             // 
@@ -376,6 +374,26 @@
             normalMapCheckBox.Text = "NormalMap";
             normalMapCheckBox.UseVisualStyleBackColor = true;
             // 
+            // textBox1
+            // 
+            textBox1.Dock = DockStyle.Fill;
+            textBox1.Location = new Point(3, 850);
+            textBox1.Multiline = true;
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(509, 300);
+            textBox1.TabIndex = 6;
+            // 
+            // visualisationPictureBox
+            // 
+            visualisationPictureBox.Dock = DockStyle.Fill;
+            visualisationPictureBox.Location = new Point(3, 3);
+            visualisationPictureBox.Name = "visualisationPictureBox";
+            visualisationPictureBox.Size = new Size(1151, 1153);
+            visualisationPictureBox.TabIndex = 1;
+            visualisationPictureBox.TabStop = false;
+            visualisationPictureBox.Click += visualisationPictureBox_Click;
+            visualisationPictureBox.Paint += visualisationPictureBox_Paint;
+            // 
             // mainForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
@@ -397,6 +415,7 @@
             tableLayoutPanel.ResumeLayout(false);
             parametersPanel.ResumeLayout(false);
             parametersTableLayoutPanel.ResumeLayout(false);
+            parametersTableLayoutPanel.PerformLayout();
             triangleGridPanel.ResumeLayout(false);
             triangleGridPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)triangulationTrackBar).EndInit();
@@ -412,6 +431,7 @@
             ((System.ComponentModel.ISupportInitialize)zControlPointTrackBar).EndInit();
             normalMapPanel.ResumeLayout(false);
             normalMapPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)visualisationPictureBox).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -447,5 +467,7 @@
         private Panel controlPointsPanel;
         private Panel normalMapPanel;
         private CheckBox normalMapCheckBox;
+        private TextBox textBox1;
+        private PictureBox visualisationPictureBox;
     }
 }

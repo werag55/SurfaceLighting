@@ -25,6 +25,7 @@ namespace SurfaceLighting
 
         public void initTriangleGrid()
         {
+            triangles.Clear();
             float step = 1.0f / n;
             for (float  i = 0; i < 1; i+=step)
             {
