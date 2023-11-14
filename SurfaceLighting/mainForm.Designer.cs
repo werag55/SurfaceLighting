@@ -96,15 +96,14 @@
             menuStrip.Items.AddRange(new ToolStripItem[] { ssToolStripMenuItem });
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
-            menuStrip.Size = new Size(1678, 33);
+            menuStrip.Size = new Size(1678, 24);
             menuStrip.TabIndex = 1;
             menuStrip.Text = "menuStrip1";
             // 
             // ssToolStripMenuItem
             // 
             ssToolStripMenuItem.Name = "ssToolStripMenuItem";
-            ssToolStripMenuItem.Size = new Size(44, 29);
-            ssToolStripMenuItem.Text = "ss";
+            ssToolStripMenuItem.Size = new Size(16, 20);
             // 
             // tableLayoutPanel
             // 
@@ -114,11 +113,11 @@
             tableLayoutPanel.Controls.Add(parametersPanel, 1, 0);
             tableLayoutPanel.Controls.Add(visualisationPictureBox, 0, 0);
             tableLayoutPanel.Dock = DockStyle.Fill;
-            tableLayoutPanel.Location = new Point(0, 33);
+            tableLayoutPanel.Location = new Point(0, 24);
             tableLayoutPanel.Name = "tableLayoutPanel";
             tableLayoutPanel.RowCount = 1;
             tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel.Size = new Size(1678, 1159);
+            tableLayoutPanel.Size = new Size(1678, 1168);
             tableLayoutPanel.TabIndex = 2;
             // 
             // parametersPanel
@@ -128,7 +127,7 @@
             parametersPanel.Dock = DockStyle.Fill;
             parametersPanel.Location = new Point(1160, 3);
             parametersPanel.Name = "parametersPanel";
-            parametersPanel.Size = new Size(515, 1153);
+            parametersPanel.Size = new Size(515, 1162);
             parametersPanel.TabIndex = 0;
             // 
             // parametersTableLayoutPanel
@@ -153,7 +152,7 @@
             parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 64F));
             parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 60F));
             parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 265F));
-            parametersTableLayoutPanel.Size = new Size(515, 1153);
+            parametersTableLayoutPanel.Size = new Size(515, 1162);
             parametersTableLayoutPanel.TabIndex = 0;
             // 
             // normalMapPanel
@@ -162,7 +161,7 @@
             normalMapPanel.Controls.Add(normalMapButton);
             normalMapPanel.Controls.Add(normalMapCheckBox);
             normalMapPanel.Dock = DockStyle.Fill;
-            normalMapPanel.Location = new Point(3, 830);
+            normalMapPanel.Location = new Point(3, 839);
             normalMapPanel.Name = "normalMapPanel";
             normalMapPanel.Size = new Size(509, 54);
             normalMapPanel.TabIndex = 9;
@@ -182,7 +181,7 @@
             // 
             normalMapCheckBox.AutoSize = true;
             normalMapCheckBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            normalMapCheckBox.Location = new Point(-1, 3);
+            normalMapCheckBox.Location = new Point(10, 3);
             normalMapCheckBox.Name = "normalMapCheckBox";
             normalMapCheckBox.Size = new Size(167, 36);
             normalMapCheckBox.TabIndex = 6;
@@ -192,7 +191,7 @@
             // textBox1
             // 
             textBox1.Dock = DockStyle.Fill;
-            textBox1.Location = new Point(3, 890);
+            textBox1.Location = new Point(3, 899);
             textBox1.Multiline = true;
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(509, 260);
@@ -205,9 +204,9 @@
             triangleGridPanel.Controls.Add(triangleGridLabel);
             triangleGridPanel.Controls.Add(triangleGridCheckBox);
             triangleGridPanel.Dock = DockStyle.Fill;
-            triangleGridPanel.Location = new Point(3, 127);
+            triangleGridPanel.Location = new Point(3, 131);
             triangleGridPanel.Name = "triangleGridPanel";
-            triangleGridPanel.Size = new Size(509, 134);
+            triangleGridPanel.Size = new Size(509, 139);
             triangleGridPanel.TabIndex = 1;
             // 
             // triangulationTrackBar
@@ -253,7 +252,7 @@
             coefficientsPanel.Controls.Add(kdTrackBar);
             coefficientsPanel.Controls.Add(kdLabel);
             coefficientsPanel.Dock = DockStyle.Fill;
-            coefficientsPanel.Location = new Point(3, 267);
+            coefficientsPanel.Location = new Point(3, 276);
             coefficientsPanel.Name = "coefficientsPanel";
             coefficientsPanel.Size = new Size(509, 337);
             coefficientsPanel.TabIndex = 2;
@@ -322,7 +321,7 @@
             IoPanel.Controls.Add(solidColorRadioButton);
             IoPanel.Controls.Add(IoLabel);
             IoPanel.Dock = DockStyle.Fill;
-            IoPanel.Location = new Point(3, 610);
+            IoPanel.Location = new Point(3, 619);
             IoPanel.Name = "IoPanel";
             IoPanel.Size = new Size(509, 150);
             IoPanel.TabIndex = 3;
@@ -391,7 +390,7 @@
             controlPointsPanel.Dock = DockStyle.Fill;
             controlPointsPanel.Location = new Point(3, 3);
             controlPointsPanel.Name = "controlPointsPanel";
-            controlPointsPanel.Size = new Size(509, 118);
+            controlPointsPanel.Size = new Size(509, 122);
             controlPointsPanel.TabIndex = 4;
             // 
             // zControlPointTrackBar
@@ -433,7 +432,7 @@
             lightColorPanel.Controls.Add(lightColorButton);
             lightColorPanel.Controls.Add(lightColorLabel);
             lightColorPanel.Dock = DockStyle.Fill;
-            lightColorPanel.Location = new Point(3, 766);
+            lightColorPanel.Location = new Point(3, 775);
             lightColorPanel.Name = "lightColorPanel";
             lightColorPanel.Size = new Size(509, 58);
             lightColorPanel.TabIndex = 10;
@@ -445,6 +444,7 @@
             lightColorButton.Size = new Size(34, 34);
             lightColorButton.TabIndex = 7;
             lightColorButton.UseVisualStyleBackColor = true;
+            lightColorButton.Click += lightColorButton_Click;
             // 
             // lightColorLabel
             // 
@@ -461,7 +461,7 @@
             visualisationPictureBox.Dock = DockStyle.Fill;
             visualisationPictureBox.Location = new Point(3, 3);
             visualisationPictureBox.Name = "visualisationPictureBox";
-            visualisationPictureBox.Size = new Size(1151, 1153);
+            visualisationPictureBox.Size = new Size(1151, 1162);
             visualisationPictureBox.TabIndex = 1;
             visualisationPictureBox.TabStop = false;
             visualisationPictureBox.Click += visualisationPictureBox_Click;

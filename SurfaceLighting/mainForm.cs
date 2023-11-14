@@ -157,6 +157,24 @@ namespace SurfaceLighting
 
         #endregion
 
+        #region light color
+
+        private void lightColorButton_Click(object sender, EventArgs e)
+        {
+            ColorDialog colorDialog = new ColorDialog();
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                lightColorButton.BackColor = colorDialog.Color;
+                lightingVisualisation.Il = new float[] { (float)colorDialog.Color.R / 255,
+                    (float)colorDialog.Color.G / 255, (float)colorDialog.Color.B / 255};
+                lightingVisualisation.initBitmap();
+                visualisationPictureBox.Invalidate();
+            }
+        }
+
         #endregion
+
+        #endregion
+
     }
 }
