@@ -10,6 +10,8 @@ namespace SurfaceLighting
 {
     public partial class mainForm : Form
     {
+        private System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+
         LightingVisualisation lightingVisualisation;
 
         bool controlPoints = false;
@@ -18,6 +20,7 @@ namespace SurfaceLighting
         public mainForm()
         {
             InitializeComponent();
+            InitializeTimer();
 
             int size = visualisationPictureBox.Width < visualisationPictureBox.Height ?
                 visualisationPictureBox.Width : visualisationPictureBox.Height;
@@ -27,7 +30,27 @@ namespace SurfaceLighting
             kdTrackBar.Value = (int)(lightingVisualisation.kd * 10);
             ksTrackBar.Value = (int)(lightingVisualisation.ks * 10);
             mTrackBar.Value = lightingVisualisation.m;
+
+            timer.Start();
+
         }
+
+        #region timer
+
+        private void InitializeTimer()
+        {
+            timer.Interval = 20;
+            timer.Tick += Timer_Tick;
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            lightingVisualisation.moveLight();
+            visualisationPictureBox.Invalidate();
+        }
+
+        #endregion
+
         private void visualisationPictureBox_Paint(object sender, PaintEventArgs e)
         {
 
@@ -147,8 +170,8 @@ namespace SurfaceLighting
 
 
             OpenFileDialog openFileDialog = new();
-            openFileDialog.InitialDirectory = imagesDirectory;//@"SolutionPath\Images\";//@"..\..\..\Images";
-            openFileDialog.Filter = "Images (*.jpg, *.jpeg, *.png, *.gif)|*.jpg;*.jpeg;*.png;*.gif"; //|Wszystkie pliki (*.*)|*.*";
+            openFileDialog.InitialDirectory = imagesDirectory;
+            openFileDialog.Filter = "Images (*.jpg, *.jpeg, *.png, *.gif)|*.jpg;*.jpeg;*.png;*.gif"; 
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -195,7 +218,39 @@ namespace SurfaceLighting
 
         #endregion
 
+        #region normal map
+
+        private void normalMapCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (normalMapCheckBox.Checked)
+                normalMapButton.Enabled = true;
+            else
+                normalMapButton.Enabled = false;
+
+            lightingVisualisation.setNormalMapBool(normalMapCheckBox.Checked);
+            visualisationPictureBox.Invalidate();
+        }
+        private void normalMapButton_Click(object sender, EventArgs e)
+        {
+            string dir = Application.StartupPath;
+            for (int i = 0; i < 2; i++)
+                dir = Directory.GetParent(dir).Parent.FullName;
+            string imagesDirectory = Path.Combine(dir, "NormalMaps");
+
+
+            OpenFileDialog openFileDialog = new();
+            openFileDialog.InitialDirectory = imagesDirectory;
+            openFileDialog.Filter = "Images (*.jpg, *.jpeg, *.png, *.gif)|*.jpg;*.jpeg;*.png;*.gif"; 
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                lightingVisualisation.setNormalMap(openFileDialog.FileName);
+                visualisationPictureBox.Invalidate();
+            }
+        }
+
         #endregion
 
+        #endregion
     }
 }

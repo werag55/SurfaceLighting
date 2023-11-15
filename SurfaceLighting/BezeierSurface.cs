@@ -164,7 +164,8 @@ namespace SurfaceLighting
                 {
                     var v = t.vertices[i];
                     if (pointsDistanceSquared(controlPointsBM.scaleX(v.x), controlPointsBM.scaleY(v.y), p.X, p.Y) <= (float)(Math.Pow(radius / 2, 2)))
-                        text.Text = $"x = {v.x} y= {v.y} z={v.z} \n normal = {t.normalVectors[i].ToString()}";
+                        text.Text = $"x = {v.x} y= {v.y} z={v.z} \n normal = {t.normalVectors[i].ToString()}" +
+                            $"xBM = {triangleGrid.triangleGridBM.scaleX(v.x)} yBM = {triangleGrid.triangleGridBM.scaleY(v.y)}";
                 }
             }
 
@@ -208,7 +209,7 @@ namespace SurfaceLighting
         public void setN(int newN)
         {
             triangleGrid.setN(newN);
-            initBitmap();
+            //initBitmap();
             calculateZ();
             calculateNormalVectors();
         }
