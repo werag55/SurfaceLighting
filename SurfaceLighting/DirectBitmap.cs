@@ -23,9 +23,30 @@ namespace SurfaceLighting
         {
             Width = width;
             Height = height;
-            Bits = new Int32[width * height];
+            Bits = new Int32[(width+1) * (height+1)]; //[width  * height];
             BitsHandle = GCHandle.Alloc(Bits, GCHandleType.Pinned);
             Bitmap = new Bitmap(width, height, width * 4, PixelFormat.Format32bppPArgb, BitsHandle.AddrOfPinnedObject());
+        }
+
+        public DirectBitmap(int size, string filePath)
+        {
+            Image ig = Image.FromFile(filePath);
+            Bitmap temp = new Bitmap(ig, size, size);
+
+            Width = size;
+            Height = size;
+            Bits = new Int32[(Width + 1) * (Height + 1)]; //[width  * height];
+            BitsHandle = GCHandle.Alloc(Bits, GCHandleType.Pinned);
+            Bitmap = new Bitmap(Width, Height, Width * 4, PixelFormat.Format32bppPArgb, BitsHandle.AddrOfPinnedObject());
+
+            for (int y = 0; y < size; y++)
+            {
+                for (int x = 0; x < size; x++)
+                {
+                    Color pixelColor = temp.GetPixel(x, y);
+                    SetPixel(x, y, pixelColor);
+                }
+            }
         }
 
         public void SetPixel(int x, int y, Color colour)
@@ -47,28 +68,34 @@ namespace SurfaceLighting
 
         #region scaling
 
-        public PointF scalePoint(PointF point) 
+        public PointF scalePoint(PointF point)
         {
-            float scaledX = point.X * (Width - 1);
-            float scaledY = (1 - point.Y) * (Height - 1);
-            return new PointF(scaledX, scaledY);
+            return new PointF(scaleX(point.X), scaleY(point.Y));
         }
 
         public Point3D scalePoint(Point3D point)
         {
-            float scaledX = point.x * (Width - 1);
-            float scaledY = (1 - point.y) * (Height - 1);
-            return new Point3D(scaledX, scaledY, point.z);
+            return new Point3D(scaleX(point.x), scaleY(point.y), point.z);
+        }
+
+        public float scaleX(float x)
+        {
+            return (x * (Width - 1)) > 0 ? (x * (Width - 1)) : 0;
+        }
+
+        public float scaleY(float y)
+        {
+            return ((1 - y) * (Height - 1)) > 0 ? ((1 - y) * (Height - 1)) : 0;
         }
 
         public float reScaleX(float x)
         {
-            return x / (Width - 1);
+            return (x / (Width - 1)) > 0 ? (x / (Width - 1)) : 0;
         }
 
         public float reScaleY(float y)
         {
-            return 1 - y / (Height - 1);
+            return (1 - y / (Height - 1)) > 0 ? (1 - y / (Height - 1)) : 0;
         }
 
         public Triangle3D scaleTriangle(Triangle3D t)

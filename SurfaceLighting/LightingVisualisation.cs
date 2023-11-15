@@ -1,10 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms.VisualStyles;
+
+public enum ObjColor
+{
+    Solid,
+    Image
+}
 
 namespace SurfaceLighting
 { 
@@ -17,32 +24,35 @@ namespace SurfaceLighting
         public LightingVisualisation(int size)
         {
             bezeierSurface = new BezeierSurface(size);
-            initBitmap(bezeierSurface.triangleGrid, size);
+            initBitmap();
+            setImage(imageFilePath);
         }
 
-        public void initBitmap(TriangleGrid tg, int size)
+        public void initBitmap()
         {
+            TriangleGrid tg = bezeierSurface.triangleGrid;
             if (g != null)
             {
                 visualisationBM.Dispose();
                 g.Dispose();
             }
-            visualisationBM = new DirectBitmap(size, size);
+            visualisationBM = new DirectBitmap(bezeierSurface.size, bezeierSurface.size);
             g = Graphics.FromImage(visualisationBM.Bitmap);
 
-            Parallel.ForEach(tg.triangles, triangle =>
-                fillPolygon(triangle));
+            //Parallel.ForEach(tg.triangles, triangle =>
+            //    fillPolygon(triangle));
 
             ///////////////////////////
             ///
-            //foreach (var triangle in tg.triangles)
-            //    fillPolygon(triangle);
+            foreach (var triangle in tg.triangles)
+                fillPolygon(triangle);
         }
 
         #region fillPolygon
 
         Comparer<Node> nodeComparer = Comparer<Node>.Create((a, b) => a.xMin.CompareTo(b.xMin));
-        private struct Node
+
+        private class Node
         {
             public int yMax;
             public float xMin;
@@ -65,10 +75,14 @@ namespace SurfaceLighting
 
                 for (int i =  0; i < activeEdgeTable.Count - 1; i+=2)
                 {
-                    for (int j = (int)(activeEdgeTable[i].xMin); j < (int)(activeEdgeTable[i+1].xMin); j++)
-                    {
-                        Color I = getFillingColor(visualisationBM.reScaleX(j), visualisationBM.reScaleY(y), t); //
-                        visualisationBM.SetPixel(j, y, I);
+                    for (int j = (int)Math.Floor(activeEdgeTable[i].xMin); j <= Math.Ceiling(activeEdgeTable[i+1].xMin); j++) // < czy <=
+                    { 
+
+                        Color? I = getFillingColor(visualisationBM.reScaleX(j), visualisationBM.reScaleY(y), t); //
+                        //if (I == null)
+                        //    continue;
+                        //if (I != null)
+                        visualisationBM.SetPixel(j, y, (Color)I);
                     }
 
                 }
@@ -83,7 +97,7 @@ namespace SurfaceLighting
                         i--;
                     }
                     else
-                        edge.xMin += edge.step;
+                        activeEdgeTable[i].xMin += edge.step;
                 }
                 y++;
             }
@@ -92,15 +106,16 @@ namespace SurfaceLighting
 
         private (int yMin, int yMax) findEdgeY(IPolygon3D polygon)
         {
-            int yMin = int.MaxValue, yMax = int.MinValue;
+            float yMin = int.MaxValue, yMax = int.MinValue;
             foreach (var vertex in polygon.vertices)
             {
                 if (vertex.y > yMax)
-                    yMax = (int)vertex.y;
+                    yMax = vertex.y;
                 if (vertex.y < yMin)
-                    yMin = (int)vertex.y;
+                    yMin = vertex.y;
             }
-            return (yMin, yMax);
+
+            return ((int)Math.Floor(yMin), (int)Math.Ceiling(yMax));
         }
 
         private List<Node>[] getEdgeTable(IPolygon3D polygon, out int yPolygonMin)
@@ -110,25 +125,30 @@ namespace SurfaceLighting
 
             for(int i = 0;  i < polygon.vertices.Length; i++)
             {
-                int yMin = (int)(polygon.vertices[i].y);
-                int yMax = (int)(polygon.vertices[(i + 1) % polygon.vertices.Length].y);
-                float xMin = (int)(polygon.vertices[i].x);
-                float xMax = (int)(polygon.vertices[(i + 1) % polygon.vertices.Length].x);
+                int yMin = (int)Math.Floor(polygon.vertices[i].y);
+                int yMax = (int)Math.Ceiling(polygon.vertices[(i + 1) % polygon.vertices.Length].y);
+                float xMin = (int)Math.Floor(polygon.vertices[i].x);
+                float xMax = (int)Math.Ceiling(polygon.vertices[(i + 1) % polygon.vertices.Length].x);
                 float step = (xMax - xMin) / (yMax - yMin);
 
                 if (yMax < yMin)
-                    (yMin, yMax) = (yMax, yMin);
-                if (xMax < xMin)
-                    xMin = xMax;
+                {
+                    yMin = (int)Math.Floor(polygon.vertices[(i + 1) % polygon.vertices.Length].y);
+                    yMax = (int)Math.Ceiling(polygon.vertices[i].y);
+                }
+                //if (xMax < xMin)
+                //    xMin = xMax;
 
                 if (edgeTable[yMin] == null)
                     edgeTable[yMin] = new List<Node>();
-                edgeTable[yMin].Add(new Node()
-                {
-                    yMax = yMax,
-                    xMin = xMin,
-                    step = step
-                });
+
+                if (yMin != yMax) // not horizontal edge
+                    edgeTable[yMin].Add(new Node()
+                    {
+                        yMax = yMax,
+                        xMin = xMin,
+                        step = step
+                    });
             }
 
             return edgeTable;
@@ -138,22 +158,108 @@ namespace SurfaceLighting
 
         #region color finding
 
-        public float kd = 0.5f, ks = 1; // coefficients describing the influence of a given component (the diffuse component of the illumination 
-                                     // rmodel (Lambert model) and the specular component, respectively on the result (0 - 1)
-        public float[] Il = { 1, 1, 1 }; // light color scaled to 0-1 (white by default)
+        public float kd = 0.2f, ks = 1f; // coefficients describing the influence of a given component (the diffuse component of the illumination 
+                                     // rmodel (Lambert model) and the specular component, respectively) on the result (0 - 1)
+        public float[] Il { get; private set; } = { 1, 1, 1 }; // light color scaled to 0-1 (white by default)
         Vector3 V = new Vector3(0, 0, 1);
-        public int m = 50; // coefficient describing how much a given triangle is mirrored (1-100)
-        Point3D lightSource = new Point3D(0.5f, 0.5f, 1);
+        public int m = 60; // coefficient describing how much a given triangle is mirrored (1-100)
+        Point3D lightSource = new Point3D(0.66f, 0.33f, 3);
+
+        public ObjColor objColor { get; private set; }
+        public float[] Io { get; set; } = { 0, 128f / 255, 0 }; // object color scaled to 0-1 (green by default)
+        public string imageFilePath = @"..\..\..\Images\cat.jpg";//@"C:\Users\weron\OneDrive\Pulpit\semestr5\gk\proj2\SurfaceLighting\SurfaceLighting\Images\cat.jpg";//@"Images/cat.jpg";
+        private DirectBitmap imageBM;
+
+        #region setters
+
+        public void setKd(float newKd)
+        {
+            kd = newKd;
+            initBitmap();
+        }
+
+        public void setKs(float newKs)
+        {
+            ks = newKs;
+            initBitmap();
+        }
+
+        public void setIl(Color c)
+        {
+            Il = new float[] { (float)c.R / 255, (float)c.G / 255, (float)c.B / 255, };
+            initBitmap();
+        }
+
+        public void setM(int newM)
+        {
+            m = newM;
+            initBitmap();
+        }
+
+        public void setN(int newN)
+        {
+            bezeierSurface.setN(newN);
+            initBitmap();
+        }
+
+        public void setZ(float newZ)
+        {
+            bezeierSurface.setZ(newZ);
+            initBitmap();
+        }
+
+        public void setObjColor(ObjColor objC)
+        {
+            objColor = objC;
+            initBitmap();
+        }
+
+        public void setIo(Color c)
+        {
+            Io = new float[] { (float)c.R / 255, (float)c.G / 255, (float)c.B / 255, };
+            initBitmap();
+        }
+
+        public void setImage(string filePath)
+        {
+            if (imageBM != null)
+                imageBM.Dispose();
+            imageFilePath = filePath;
+            imageBM = new DirectBitmap(bezeierSurface.size, imageFilePath);
+            initBitmap();
+        }
+
+        #endregion
 
         #region interpolation
+
         private float[] barycentricCoordinates(float x, float y, Triangle3D t)
         {
-            Point3D p = new Point3D(x, y, 0);
-            float u = triangleArea(new Triangle3D(p, t.vertices[0], t.vertices[2])) / triangleArea(t);
-            float v = triangleArea(new Triangle3D(p, t.vertices[0], t.vertices[1])) / triangleArea(t);
-            float w = triangleArea(new Triangle3D(p, t.vertices[2], t.vertices[1])) / triangleArea(t);
-            return new float[3] { u, v, w };
+            PointF[] vertices2D = t.vertices2D();
+            float x1 = vertices2D[0].X;
+            float y1 = vertices2D[0].Y;
+            float x2 = vertices2D[1].X;
+            float y2 = vertices2D[1].Y;
+            float x3 = vertices2D[2].X;
+            float y3 = vertices2D[2].Y;
+
+            float alpha = ((y2 - y3) * (x - x3) + (x3 - x2) * (y - y3)) /
+                          ((y2 - y3) * (x1 - x3) + (x3 - x2) * (y1 - y3));
+            float beta = ((y3 - y1) * (x - x3) + (x1 - x3) * (y - y3)) /
+                         ((y2 - y3) * (x1 - x3) + (x3 - x2) * (y1 - y3));
+            float gamma = 1 - alpha - beta;
+
+            return new float[] { alpha, beta, gamma };
         }
+
+        //private float[] barycentricCoordinates(float x, float y, Triangle3D t)
+        //{
+        //    Point3D p = new Point3D(x, y, 0);
+        //    float u = triangleArea(new Triangle3D(p, t.vertices[0], t.vertices[2])) / triangleArea(t);
+        //    float v = triangleArea(new Triangle3D(p, t.vertices[0], t.vertices[1])) / triangleArea(t);
+        //    float w = triangleArea(new Triangle3D(p, t.vertices[1], t.vertices[2])) / triangleArea(t);
+        //    return new float[3] { v, w, u};
+        //}
 
         public float interpolateZ(float[] barycentricCoordinates, Triangle3D t)
         {
@@ -188,12 +294,27 @@ namespace SurfaceLighting
             return ret < 0 ? 0 : ret;
         }
 
-        private Color getFillingColor(float x, float y, Triangle3D t)
+        private Color? getFillingColor(float x, float y, Triangle3D t)
         {
             float[] barycCoord = barycentricCoordinates(x, y, t);
+
+            //if (barycCoord[0] < -0.000001 || barycCoord[1] < -0.000001 || barycCoord[2] < -0.000001)
+            //    return null;
+
+
             float z = interpolateZ(barycCoord, t);
             Vector3 N = Vector3.Normalize(interpolateNormalVector(barycCoord, t));
-            float[] Io = { 0, (float)128/255, 0 }; // object color scaled to 0-1 (white by default)
+
+            float[] Io;
+            if (objColor == ObjColor.Solid)
+                Io = this.Io;
+            else
+            {
+                Color pixelColor = imageBM.GetPixel((int)imageBM.scaleX(x), (int)imageBM.scaleY(y));
+                Io = new float[] { (float)(pixelColor.R) / 255, (float)(pixelColor.G) / 255, 
+                    (float)(pixelColor.B) / 255 };
+            }
+
             Vector3 L = Vector3.Normalize(new Vector3(lightSource.x - x, lightSource.y - y, lightSource.z - z)); // versor to light source
             Vector3 R = 2 * Vector3.Dot(N, L) * N - L;
 
