@@ -9,7 +9,7 @@ namespace SurfaceLighting
 {
     internal class TriangleGrid
     {
-        public int n { get; private set; }// n*n - number of triangles in the grid
+        public int n { get; private set; }// 2*n*n - number of triangles in the grid
         private int size;
         public List<Triangle3D> triangles { get; set; } = new List<Triangle3D>();
         public DirectBitmap triangleGridBM { get; private set; } 

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Numerics;
+using System.Reflection.Metadata;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms.VisualStyles;
@@ -22,10 +24,13 @@ namespace SurfaceLighting
         public BezeierSurface bezeierSurface { get; private set; }
 
         public LightingVisualisation(int size)
-        {
+        { 
+
             bezeierSurface = new BezeierSurface(size);
             initBitmap();
             setImage(imageFilePath);
+            setNormalMap(normalMapFilePath);
+
         }
 
         public void initBitmap()
@@ -39,13 +44,13 @@ namespace SurfaceLighting
             visualisationBM = new DirectBitmap(bezeierSurface.size, bezeierSurface.size);
             g = Graphics.FromImage(visualisationBM.Bitmap);
 
-            //Parallel.ForEach(tg.triangles, triangle =>
-            //    fillPolygon(triangle));
+            Parallel.ForEach(tg.triangles, triangle =>
+                fillPolygon(triangle));
 
             ///////////////////////////
             ///
-            foreach (var triangle in tg.triangles)
-                fillPolygon(triangle);
+            //foreach (var triangle in tg.triangles)
+            //    fillPolygon(triangle);
         }
 
         #region fillPolygon
@@ -158,17 +163,23 @@ namespace SurfaceLighting
 
         #region color finding
 
-        public float kd = 0.2f, ks = 1f; // coefficients describing the influence of a given component (the diffuse component of the illumination 
+        public float eps = (float)1e-6;
+
+        public float kd = 1f, ks = 1f; // coefficients describing the influence of a given component (the diffuse component of the illumination 
                                      // rmodel (Lambert model) and the specular component, respectively) on the result (0 - 1)
         public float[] Il { get; private set; } = { 1, 1, 1 }; // light color scaled to 0-1 (white by default)
         Vector3 V = new Vector3(0, 0, 1);
         public int m = 60; // coefficient describing how much a given triangle is mirrored (1-100)
-        Point3D lightSource = new Point3D(0.66f, 0.33f, 3);
+        Point3D lightSource = new Point3D(0.5f, 0.5f, 5);
 
         public ObjColor objColor { get; private set; }
         public float[] Io { get; set; } = { 0, 128f / 255, 0 }; // object color scaled to 0-1 (green by default)
-        public string imageFilePath = @"..\..\..\Images\cat.jpg";//@"C:\Users\weron\OneDrive\Pulpit\semestr5\gk\proj2\SurfaceLighting\SurfaceLighting\Images\cat.jpg";//@"Images/cat.jpg";
+        public string imageFilePath { get; private set; } = @"..\..\..\Images\cat.jpg";//@"C:\Users\weron\OneDrive\Pulpit\semestr5\gk\proj2\SurfaceLighting\SurfaceLighting\Images\cat.jpg";//@"Images/cat.jpg";
         private DirectBitmap imageBM;
+
+        public bool showNormalMap { get; private set; } = false;
+        public string normalMapFilePath { get; private set; }  = @"..\..\..\NormalMaps\NormalMap.jpg";
+        private DirectBitmap normalMapBM;
 
         #region setters
 
@@ -229,37 +240,63 @@ namespace SurfaceLighting
             initBitmap();
         }
 
+        public void setNormalMapBool(bool show)
+        {
+            showNormalMap = show;
+            initBitmap();
+        }
+
+        public void setNormalMap(string filePath = "")
+        {
+            if (normalMapBM != null)
+                normalMapBM.Dispose();
+            normalMapFilePath = filePath;
+            normalMapBM = new DirectBitmap(bezeierSurface.size, normalMapFilePath);
+
+            initBitmap();
+        }
+
         #endregion
 
         #region interpolation
 
-        private float[] barycentricCoordinates(float x, float y, Triangle3D t)
+        //private float[] barycentricCoordinates(float x, float y, float z, Triangle3D t)
+        //{
+        //    PointF[] vertices2D = t.vertices2D();
+        //    float x1 = vertices2D[0].X;
+        //    float y1 = vertices2D[0].Y;
+        //    float x2 = vertices2D[1].X;
+        //    float y2 = vertices2D[1].Y;
+        //    float x3 = vertices2D[2].X;
+        //    float y3 = vertices2D[2].Y;
+
+        //    float alpha = ((y2 - y3) * (x - x3) + (x3 - x2) * (y - y3)) /
+        //                  ((y2 - y3) * (x1 - x3) + (x3 - x2) * (y1 - y3));
+        //    float beta = ((y3 - y1) * (x - x3) + (x1 - x3) * (y - y3)) /
+        //                 ((y2 - y3) * (x1 - x3) + (x3 - x2) * (y1 - y3));
+        //    float gamma = 1 - alpha - beta;
+
+        //    return new float[] { alpha, beta, gamma };
+        //}
+
+        private float[] barycentricCoordinates(float x, float y, float z, Triangle3D t)
         {
-            PointF[] vertices2D = t.vertices2D();
-            float x1 = vertices2D[0].X;
-            float y1 = vertices2D[0].Y;
-            float x2 = vertices2D[1].X;
-            float y2 = vertices2D[1].Y;
-            float x3 = vertices2D[2].X;
-            float y3 = vertices2D[2].Y;
-
-            float alpha = ((y2 - y3) * (x - x3) + (x3 - x2) * (y - y3)) /
-                          ((y2 - y3) * (x1 - x3) + (x3 - x2) * (y1 - y3));
-            float beta = ((y3 - y1) * (x - x3) + (x1 - x3) * (y - y3)) /
-                         ((y2 - y3) * (x1 - x3) + (x3 - x2) * (y1 - y3));
-            float gamma = 1 - alpha - beta;
-
-            return new float[] { alpha, beta, gamma };
+            Point3D p = new Point3D(x, y, z);
+            float u = triangleArea(new Triangle3D(p, t.vertices[1], t.vertices[2])) / triangleArea(t);
+            float v = triangleArea(new Triangle3D(p, t.vertices[0], t.vertices[2])) / triangleArea(t);
+            float w = triangleArea(new Triangle3D(p, t.vertices[0], t.vertices[1])) / triangleArea(t);
+            return new float[3] { u, v, w };
         }
 
-        //private float[] barycentricCoordinates(float x, float y, Triangle3D t)
-        //{
-        //    Point3D p = new Point3D(x, y, 0);
-        //    float u = triangleArea(new Triangle3D(p, t.vertices[0], t.vertices[2])) / triangleArea(t);
-        //    float v = triangleArea(new Triangle3D(p, t.vertices[0], t.vertices[1])) / triangleArea(t);
-        //    float w = triangleArea(new Triangle3D(p, t.vertices[1], t.vertices[2])) / triangleArea(t);
-        //    return new float[3] { v, w, u};
-        //}
+        private float triangleArea(Triangle3D t)
+        {
+            Vector3 AB = new Vector3(t.vertices[1].x - t.vertices[0].x,
+                t.vertices[1].y - t.vertices[0].y, 0);
+            Vector3 AC = new Vector3(t.vertices[2].x - t.vertices[0].x,
+                t.vertices[2].y - t.vertices[0].y, 0);
+
+            return 0.5f * Vector3.Cross(AB, AC).Length();
+        }
 
         public float interpolateZ(float[] barycentricCoordinates, Triangle3D t)
         {
@@ -277,16 +314,37 @@ namespace SurfaceLighting
             return normalInterpolated;
         }
 
-        private float triangleArea(Triangle3D t)
+        #endregion
+
+        private Vector3 normalMapVector(Color normalMapColor)
         {
-            Vector3 AB = new Vector3(t.vertices[1].x - t.vertices[0].x,
-                t.vertices[1].y - t.vertices[0].y, 0);
-            Vector3 AC = new Vector3(t.vertices[2].x - t.vertices[0].x,
-                t.vertices[2].y - t.vertices[0].y, 0);
-            return 0.5f * (Vector3.Cross(AB, AC)).Length();
+            float X = ((float)normalMapColor.R /255) * 2 - 1;
+            float Y = ((float)normalMapColor.G / 255) * 2 - 1;
+            float Z = ((float)normalMapColor.B / 255);
+            return new Vector3(X, Y, Z);
         }
 
-        #endregion
+        public Vector3 modifyNormalVector(Vector3 N, Color normalMapColor)
+        {
+            Vector3 B = Vector3.Cross(N, new Vector3(0,0,1));
+            if (Math.Abs(N.X) < eps && Math.Abs(N.Y) < eps 
+                && Math.Abs(N.Z - 1) < eps)
+                B = new Vector3(0, 1, 0);
+
+            Vector3 T = Vector3.Cross(B, N);
+
+            Vector3 Nt = normalMapVector(normalMapColor);
+
+            Vector3 row1 = new Vector3(T.X, B.X, N.X);
+            Vector3 row2 = new Vector3(T.Y, B.Y, N.Y);
+            Vector3 row3 = new Vector3(T.Z, B.Z, N.Z);
+
+            float resultX = Vector3.Dot(row1, Nt);
+            float resultY = Vector3.Dot(row2, Nt);
+            float resultZ = Vector3.Dot(row3, Nt);
+
+            return new Vector3(resultX, resultY, resultZ);
+        }
 
         private float cos(Vector3 U, Vector3 V)
         {
@@ -296,14 +354,18 @@ namespace SurfaceLighting
 
         private Color? getFillingColor(float x, float y, Triangle3D t)
         {
-            float[] barycCoord = barycentricCoordinates(x, y, t);
+            float[] barycCoordZ = barycentricCoordinates(x, y, 0, t);
+            float z = interpolateZ(barycCoordZ, t);
 
             //if (barycCoord[0] < -0.000001 || barycCoord[1] < -0.000001 || barycCoord[2] < -0.000001)
             //    return null;
 
 
-            float z = interpolateZ(barycCoord, t);
-            Vector3 N = Vector3.Normalize(interpolateNormalVector(barycCoord, t));
+            float[] barycCoordN = barycentricCoordinates(x, y, z, t);
+            Vector3 N = Vector3.Normalize(interpolateNormalVector(barycCoordN, t));
+            if (showNormalMap)
+                N = Vector3.Normalize(modifyNormalVector(N, 
+                    normalMapBM.GetPixel((int)normalMapBM.scaleX(x), (int)normalMapBM.scaleY(y))));
 
             float[] Io;
             if (objColor == ObjColor.Solid)
@@ -316,13 +378,15 @@ namespace SurfaceLighting
             }
 
             Vector3 L = Vector3.Normalize(new Vector3(lightSource.x - x, lightSource.y - y, lightSource.z - z)); // versor to light source
-            Vector3 R = 2 * Vector3.Dot(N, L) * N - L;
+            //Vector3 L = new Vector3(0, 0, 1);
+            Vector3 V = new Vector3(0, 0, 1);
+            Vector3 R = Vector3.Normalize(2 * Vector3.Dot(N, L) * N - L);
 
             float[] I = new float[3];
             for (int i = 0; i < 3; i++)
             {
-                I[i] = 255 * (kd * Il[i] * Io[i] * cos(N, L)
-                    + ks * Il[i] * Io[i] * (float)Math.Pow(cos(V, R), m));
+                I[i] = 255 * ((kd * Il[i] * Io[i] * cos(N, L)
+                    + ks * Il[i] * Io[i] * (float)Math.Pow(cos(V, R), m)));
                 if (I[i] > 255)
                     I[i] = 255;
             }
@@ -332,6 +396,30 @@ namespace SurfaceLighting
 
         #endregion
 
+
+        #region light animation
+
+        private double angle = 0;
+        public void moveLight()
+        {
+            // Obliczenia pozycji punktu (światła) na elipsie w zakresie od 0 do 1
+            float x = (float)(0.5 + 0.4 * Math.Cos(angle)); // 0.5 to przesunięcie do środka obszaru (0.1 to 0.9)
+            float y = (float)(0.5 + 0.2 * Math.Sin(angle)); // 0.5 to przesunięcie do środka obszaru (0.3 to 0.7)
+
+            // Aktualizacja pozycji punktu (światła)
+            lightSource = new Point3D(x, y, lightSource.z);
+
+            // Inkrementacja kąta dla ruchu po elipsie
+            angle += 0.2;
+            if (angle >= 2 * Math.PI)
+            {
+                angle = 0;
+            }
+
+            initBitmap();
+        }
+
+        #endregion
     }
 
     public static class ListExtensions

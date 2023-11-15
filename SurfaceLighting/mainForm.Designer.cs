@@ -176,6 +176,7 @@
             normalMapButton.TabIndex = 10;
             normalMapButton.Text = "Select...";
             normalMapButton.UseVisualStyleBackColor = true;
+            normalMapButton.Click += normalMapButton_Click;
             // 
             // normalMapCheckBox
             // 
@@ -187,6 +188,7 @@
             normalMapCheckBox.TabIndex = 6;
             normalMapCheckBox.Text = "NormalMap";
             normalMapCheckBox.UseVisualStyleBackColor = true;
+            normalMapCheckBox.CheckedChanged += normalMapCheckBox_CheckedChanged;
             // 
             // textBox1
             // 
