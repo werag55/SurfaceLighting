@@ -3,7 +3,8 @@ using System.Drawing;
 using System.Security;
 using System.Security.Policy;
 using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
+
+using System.IO;
 
 namespace SurfaceLighting
 {
@@ -139,8 +140,14 @@ namespace SurfaceLighting
 
         private void objectImageButton_Click(object sender, EventArgs e)
         {
+            string dir = Application.StartupPath;
+            for (int i = 0; i < 2; i++)
+                dir = Directory.GetParent(dir).Parent.FullName;
+            string imagesDirectory = Path.Combine(dir, "Images");
+
+
             OpenFileDialog openFileDialog = new();
-            openFileDialog.InitialDirectory = @"SolutionPath\Images\";//@"..\..\..\Images";
+            openFileDialog.InitialDirectory = imagesDirectory;//@"SolutionPath\Images\";//@"..\..\..\Images";
             openFileDialog.Filter = "Images (*.jpg, *.jpeg, *.png, *.gif)|*.jpg;*.jpeg;*.png;*.gif"; //|Wszystkie pliki (*.*)|*.*";
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
