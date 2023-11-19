@@ -24,7 +24,7 @@ namespace SurfaceLighting
         public BezeierSurface(int size)
         {
             this.size = size;
-            triangleGrid = new TriangleGrid(10, size);
+            triangleGrid = new TriangleGrid(8, size);
             radius = (float)size / 30;
 
             initControlPoints();
@@ -62,7 +62,7 @@ namespace SurfaceLighting
             for (int i = 0; i < k; i++)
             {
                 for (int j = 0; j < k; j++)
-                { 
+                {
                     int scaledX = (int)(controlPoints[i, j].x * (controlPointsBM.Width - 1));
                     int scaledY = (int)((1 - controlPoints[i, j].y) * (controlPointsBM.Height - 1));
                     Rectangle bounds = new Rectangle(scaledX - (int)radius, scaledY - (int)radius, (int)(2 * radius), (int)(2 * radius));
@@ -209,7 +209,6 @@ namespace SurfaceLighting
         public void setN(int newN)
         {
             triangleGrid.setN(newN);
-            //initBitmap();
             calculateZ();
             calculateNormalVectors();
         }

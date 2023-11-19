@@ -39,10 +39,14 @@
             normalMapCheckBox = new CheckBox();
             textBox1 = new TextBox();
             triangleGridPanel = new Panel();
+            triangulationTextBox = new TextBox();
             triangulationTrackBar = new TrackBar();
             triangleGridLabel = new Label();
             triangleGridCheckBox = new CheckBox();
             coefficientsPanel = new Panel();
+            mTextBox = new TextBox();
+            ksTextBox = new TextBox();
+            kdTextBox = new TextBox();
             mTrackBar = new TrackBar();
             mLabel = new Label();
             ksTrackBar = new TrackBar();
@@ -56,10 +60,15 @@
             solidColorRadioButton = new RadioButton();
             IoLabel = new Label();
             controlPointsPanel = new Panel();
+            zControlPointTextBox = new TextBox();
             zControlPointTrackBar = new TrackBar();
             controlPointsCheckBox = new CheckBox();
             controlPointsLabel = new Label();
             lightColorPanel = new Panel();
+            zLightTextBox = new TextBox();
+            zLightTrackBar = new TrackBar();
+            zLightLabel = new Label();
+            lightMovementCheckBox = new CheckBox();
             lightColorButton = new Button();
             lightColorLabel = new Label();
             visualisationPictureBox = new PictureBox();
@@ -78,6 +87,7 @@
             controlPointsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)zControlPointTrackBar).BeginInit();
             lightColorPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)zLightTrackBar).BeginInit();
             ((System.ComponentModel.ISupportInitialize)visualisationPictureBox).BeginInit();
             SuspendLayout();
             // 
@@ -145,13 +155,13 @@
             parametersTableLayoutPanel.Location = new Point(0, 0);
             parametersTableLayoutPanel.Name = "parametersTableLayoutPanel";
             parametersTableLayoutPanel.RowCount = 7;
-            parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 47.0394745F));
-            parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 52.9605255F));
-            parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 343F));
-            parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 156F));
-            parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 64F));
-            parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 60F));
-            parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 265F));
+            parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 47.3333321F));
+            parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 52.6666679F));
+            parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 331F));
+            parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 143F));
+            parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 227F));
+            parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 57F));
+            parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 105F));
             parametersTableLayoutPanel.Size = new Size(515, 1162);
             parametersTableLayoutPanel.TabIndex = 0;
             // 
@@ -161,9 +171,9 @@
             normalMapPanel.Controls.Add(normalMapButton);
             normalMapPanel.Controls.Add(normalMapCheckBox);
             normalMapPanel.Dock = DockStyle.Fill;
-            normalMapPanel.Location = new Point(3, 839);
+            normalMapPanel.Location = new Point(3, 1002);
             normalMapPanel.Name = "normalMapPanel";
-            normalMapPanel.Size = new Size(509, 54);
+            normalMapPanel.Size = new Size(509, 51);
             normalMapPanel.TabIndex = 9;
             // 
             // normalMapButton
@@ -193,31 +203,45 @@
             // textBox1
             // 
             textBox1.Dock = DockStyle.Fill;
-            textBox1.Location = new Point(3, 899);
+            textBox1.Location = new Point(3, 1059);
             textBox1.Multiline = true;
             textBox1.Name = "textBox1";
-            textBox1.Size = new Size(509, 260);
+            textBox1.Size = new Size(509, 100);
             textBox1.TabIndex = 7;
             // 
             // triangleGridPanel
             // 
             triangleGridPanel.BorderStyle = BorderStyle.FixedSingle;
+            triangleGridPanel.Controls.Add(triangulationTextBox);
             triangleGridPanel.Controls.Add(triangulationTrackBar);
             triangleGridPanel.Controls.Add(triangleGridLabel);
             triangleGridPanel.Controls.Add(triangleGridCheckBox);
             triangleGridPanel.Dock = DockStyle.Fill;
-            triangleGridPanel.Location = new Point(3, 131);
+            triangleGridPanel.Location = new Point(3, 144);
             triangleGridPanel.Name = "triangleGridPanel";
-            triangleGridPanel.Size = new Size(509, 139);
+            triangleGridPanel.Size = new Size(509, 151);
             triangleGridPanel.TabIndex = 1;
+            // 
+            // triangulationTextBox
+            // 
+            triangulationTextBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            triangulationTextBox.Location = new Point(415, 98);
+            triangulationTextBox.Name = "triangulationTextBox";
+            triangulationTextBox.Size = new Size(57, 34);
+            triangulationTextBox.TabIndex = 6;
+            triangulationTextBox.TextAlign = HorizontalAlignment.Center;
+            triangulationTextBox.Enter += TextBox_Enter;
+            triangulationTextBox.KeyPress += integerTextBox_KeyPress;
+            triangulationTextBox.Validating += triangulationTextBox_Validating;
+            triangulationTextBox.Validated += triangulationTextBox_Validated;
             // 
             // triangulationTrackBar
             // 
             triangulationTrackBar.Location = new Point(4, 98);
-            triangulationTrackBar.Maximum = 15;
+            triangulationTrackBar.Maximum = 30;
             triangulationTrackBar.Minimum = 3;
             triangulationTrackBar.Name = "triangulationTrackBar";
-            triangulationTrackBar.Size = new Size(499, 69);
+            triangulationTrackBar.Size = new Size(405, 69);
             triangulationTrackBar.TabIndex = 5;
             triangulationTrackBar.Value = 3;
             triangulationTrackBar.Scroll += triangulationTrackBar_Scroll;
@@ -247,6 +271,9 @@
             // coefficientsPanel
             // 
             coefficientsPanel.BorderStyle = BorderStyle.FixedSingle;
+            coefficientsPanel.Controls.Add(mTextBox);
+            coefficientsPanel.Controls.Add(ksTextBox);
+            coefficientsPanel.Controls.Add(kdTextBox);
             coefficientsPanel.Controls.Add(mTrackBar);
             coefficientsPanel.Controls.Add(mLabel);
             coefficientsPanel.Controls.Add(ksTrackBar);
@@ -254,17 +281,56 @@
             coefficientsPanel.Controls.Add(kdTrackBar);
             coefficientsPanel.Controls.Add(kdLabel);
             coefficientsPanel.Dock = DockStyle.Fill;
-            coefficientsPanel.Location = new Point(3, 276);
+            coefficientsPanel.Location = new Point(3, 301);
             coefficientsPanel.Name = "coefficientsPanel";
-            coefficientsPanel.Size = new Size(509, 337);
+            coefficientsPanel.Size = new Size(509, 325);
             coefficientsPanel.TabIndex = 2;
+            // 
+            // mTextBox
+            // 
+            mTextBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            mTextBox.Location = new Point(415, 274);
+            mTextBox.Name = "mTextBox";
+            mTextBox.Size = new Size(57, 34);
+            mTextBox.TabIndex = 13;
+            mTextBox.TextAlign = HorizontalAlignment.Center;
+            mTextBox.Enter += TextBox_Enter;
+            mTextBox.KeyPress += integerTextBox_KeyPress;
+            mTextBox.Validating += mTextBox_Validating;
+            mTextBox.Validated += mTextBox_Validated;
+            // 
+            // ksTextBox
+            // 
+            ksTextBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            ksTextBox.Location = new Point(415, 178);
+            ksTextBox.Name = "ksTextBox";
+            ksTextBox.Size = new Size(57, 34);
+            ksTextBox.TabIndex = 12;
+            ksTextBox.TextAlign = HorizontalAlignment.Center;
+            ksTextBox.Enter += TextBox_Enter;
+            ksTextBox.KeyPress += decimalTextBox_KeyPress;
+            ksTextBox.Validating += ksTextBox_Validating;
+            ksTextBox.Validated += ksTextBox_Validated;
+            // 
+            // kdTextBox
+            // 
+            kdTextBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            kdTextBox.Location = new Point(415, 84);
+            kdTextBox.Name = "kdTextBox";
+            kdTextBox.Size = new Size(57, 34);
+            kdTextBox.TabIndex = 11;
+            kdTextBox.TextAlign = HorizontalAlignment.Center;
+            kdTextBox.Enter += TextBox_Enter;
+            kdTextBox.KeyPress += decimalTextBox_KeyPress;
+            kdTextBox.Validating += kdTextBox_Validating;
+            kdTextBox.Validated += kdTextBox_Validated;
             // 
             // mTrackBar
             // 
             mTrackBar.Location = new Point(4, 274);
             mTrackBar.Maximum = 100;
             mTrackBar.Name = "mTrackBar";
-            mTrackBar.Size = new Size(499, 69);
+            mTrackBar.Size = new Size(405, 69);
             mTrackBar.TabIndex = 10;
             mTrackBar.Scroll += mTrackBar_Scroll;
             // 
@@ -282,7 +348,7 @@
             // 
             ksTrackBar.Location = new Point(4, 178);
             ksTrackBar.Name = "ksTrackBar";
-            ksTrackBar.Size = new Size(499, 69);
+            ksTrackBar.Size = new Size(405, 69);
             ksTrackBar.TabIndex = 8;
             ksTrackBar.Scroll += ksTrackBar_Scroll;
             // 
@@ -300,7 +366,7 @@
             // 
             kdTrackBar.Location = new Point(4, 84);
             kdTrackBar.Name = "kdTrackBar";
-            kdTrackBar.Size = new Size(499, 69);
+            kdTrackBar.Size = new Size(405, 69);
             kdTrackBar.TabIndex = 6;
             kdTrackBar.Scroll += kdTrackBar_Scroll;
             // 
@@ -323,9 +389,9 @@
             IoPanel.Controls.Add(solidColorRadioButton);
             IoPanel.Controls.Add(IoLabel);
             IoPanel.Dock = DockStyle.Fill;
-            IoPanel.Location = new Point(3, 619);
+            IoPanel.Location = new Point(3, 632);
             IoPanel.Name = "IoPanel";
-            IoPanel.Size = new Size(509, 150);
+            IoPanel.Size = new Size(509, 137);
             IoPanel.TabIndex = 3;
             // 
             // objectImageButton
@@ -387,14 +453,29 @@
             // controlPointsPanel
             // 
             controlPointsPanel.BorderStyle = BorderStyle.FixedSingle;
+            controlPointsPanel.Controls.Add(zControlPointTextBox);
             controlPointsPanel.Controls.Add(zControlPointTrackBar);
             controlPointsPanel.Controls.Add(controlPointsCheckBox);
             controlPointsPanel.Controls.Add(controlPointsLabel);
             controlPointsPanel.Dock = DockStyle.Fill;
             controlPointsPanel.Location = new Point(3, 3);
             controlPointsPanel.Name = "controlPointsPanel";
-            controlPointsPanel.Size = new Size(509, 122);
+            controlPointsPanel.Size = new Size(509, 135);
             controlPointsPanel.TabIndex = 4;
+            // 
+            // zControlPointTextBox
+            // 
+            zControlPointTextBox.Enabled = false;
+            zControlPointTextBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            zControlPointTextBox.Location = new Point(415, 91);
+            zControlPointTextBox.Name = "zControlPointTextBox";
+            zControlPointTextBox.Size = new Size(57, 34);
+            zControlPointTextBox.TabIndex = 4;
+            zControlPointTextBox.TextAlign = HorizontalAlignment.Center;
+            zControlPointTextBox.Enter += TextBox_Enter;
+            zControlPointTextBox.KeyPress += decimalTextBox_KeyPress;
+            zControlPointTextBox.Validating += zControlPointTextBox_Validating;
+            zControlPointTextBox.Validated += zControlPointTextBox_Validated;
             // 
             // zControlPointTrackBar
             // 
@@ -403,7 +484,7 @@
             zControlPointTrackBar.Location = new Point(3, 85);
             zControlPointTrackBar.Maximum = 20;
             zControlPointTrackBar.Name = "zControlPointTrackBar";
-            zControlPointTrackBar.Size = new Size(501, 69);
+            zControlPointTrackBar.Size = new Size(406, 69);
             zControlPointTrackBar.TabIndex = 2;
             zControlPointTrackBar.Scroll += zControlPointTrackBar_Scroll;
             // 
@@ -432,13 +513,63 @@
             // lightColorPanel
             // 
             lightColorPanel.BorderStyle = BorderStyle.FixedSingle;
+            lightColorPanel.Controls.Add(zLightTextBox);
+            lightColorPanel.Controls.Add(zLightTrackBar);
+            lightColorPanel.Controls.Add(zLightLabel);
+            lightColorPanel.Controls.Add(lightMovementCheckBox);
             lightColorPanel.Controls.Add(lightColorButton);
             lightColorPanel.Controls.Add(lightColorLabel);
             lightColorPanel.Dock = DockStyle.Fill;
             lightColorPanel.Location = new Point(3, 775);
             lightColorPanel.Name = "lightColorPanel";
-            lightColorPanel.Size = new Size(509, 58);
+            lightColorPanel.Size = new Size(509, 221);
             lightColorPanel.TabIndex = 10;
+            // 
+            // zLightTextBox
+            // 
+            zLightTextBox.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            zLightTextBox.Location = new Point(415, 170);
+            zLightTextBox.Name = "zLightTextBox";
+            zLightTextBox.Size = new Size(57, 34);
+            zLightTextBox.TabIndex = 14;
+            zLightTextBox.TextAlign = HorizontalAlignment.Center;
+            zLightTextBox.Enter += TextBox_Enter;
+            zLightTextBox.KeyPress += decimalTextBox_KeyPress;
+            zLightTextBox.Validating += zLightTextBox_Validating;
+            zLightTextBox.Validated += zLightTextBox_Validated;
+            // 
+            // zLightTrackBar
+            // 
+            zLightTrackBar.Location = new Point(4, 170);
+            zLightTrackBar.Maximum = 100;
+            zLightTrackBar.Minimum = 20;
+            zLightTrackBar.Name = "zLightTrackBar";
+            zLightTrackBar.Size = new Size(405, 69);
+            zLightTrackBar.TabIndex = 11;
+            zLightTrackBar.Value = 20;
+            zLightTrackBar.Scroll += zLightTrackBar_Scroll;
+            // 
+            // zLightLabel
+            // 
+            zLightLabel.AutoSize = true;
+            zLightLabel.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            zLightLabel.Location = new Point(4, 121);
+            zLightLabel.Name = "zLightLabel";
+            zLightLabel.Size = new Size(342, 28);
+            zLightLabel.TabIndex = 10;
+            zLightLabel.Text = "Z coordinate of the light source point:";
+            // 
+            // lightMovementCheckBox
+            // 
+            lightMovementCheckBox.AutoSize = true;
+            lightMovementCheckBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            lightMovementCheckBox.Location = new Point(10, 63);
+            lightMovementCheckBox.Name = "lightMovementCheckBox";
+            lightMovementCheckBox.Size = new Size(216, 36);
+            lightMovementCheckBox.TabIndex = 8;
+            lightMovementCheckBox.Text = "Light movement";
+            lightMovementCheckBox.UseVisualStyleBackColor = true;
+            lightMovementCheckBox.CheckedChanged += lightMovementCheckBox_CheckedChanged;
             // 
             // lightColorButton
             // 
@@ -509,6 +640,7 @@
             ((System.ComponentModel.ISupportInitialize)zControlPointTrackBar).EndInit();
             lightColorPanel.ResumeLayout(false);
             lightColorPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)zLightTrackBar).EndInit();
             ((System.ComponentModel.ISupportInitialize)visualisationPictureBox).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -553,5 +685,14 @@
         private Panel lightColorPanel;
         private Button lightColorButton;
         private Label lightColorLabel;
+        private TextBox zControlPointTextBox;
+        private TextBox triangulationTextBox;
+        private TextBox mTextBox;
+        private TextBox ksTextBox;
+        private TextBox kdTextBox;
+        private TrackBar zLightTrackBar;
+        private Label zLightLabel;
+        private CheckBox lightMovementCheckBox;
+        private TextBox zLightTextBox;
     }
 }

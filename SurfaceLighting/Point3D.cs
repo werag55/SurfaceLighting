@@ -19,24 +19,5 @@ namespace SurfaceLighting
         {
             this.x = x; this.y = y; this.z = z;
         }
-
-        //#region operators
-        //public static Point3D operator -(Point3D p1, Point3D p2)
-        //{
-        //    return new Point3D(p1.x - p2.x, p1.y - p2.y, p1.z - p2.z);  
-        //}
-        //public static Point3D operator +(Point3D p1, Point3D p2)
-        //{
-        //    return new Point3D(p1.x + p2.x, p1.y + p2.y, p1.z + p2.z);
-        //}
-        //public static Point3D operator *(Point3D p, float k)
-        //{
-        //    return new Point3D(k * p.x, k * p.y, k * p.z);
-        //}
-        //public static Point3D operator *(float k, Point3D p)
-        //{
-        //    return p * k;
-        //}
-        //#endregion
     }
 }
