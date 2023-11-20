@@ -125,6 +125,9 @@ namespace SurfaceLighting
         private void validatingTextBox(object sender, System.ComponentModel.CancelEventArgs e,
             float min, float max)
         {
+            if (((TextBox)sender).Text == " ")
+                    return;
+
             if (string.IsNullOrEmpty(((TextBox)sender).Text))
                 ((TextBox)sender).Text = prevValue;
 
@@ -179,6 +182,9 @@ namespace SurfaceLighting
 
         private void zControlPointTextBox_Validated(object sender, EventArgs e)
         {
+            if (((TextBox)sender).Text == " ")
+                return;
+
             float result = float.Parse(zControlPointTextBox.Text.ToString());
             lightingVisualisation.setZ(result);
             zControlPointTrackBar.Value = (int)(result * 10);
@@ -207,7 +213,7 @@ namespace SurfaceLighting
                 zControlPointTrackBar.Value = 0;
                 zControlPointTrackBar.Enabled = false;
 
-                zControlPointTextBox.Text = "";
+                zControlPointTextBox.Text = " ";
                 zControlPointTextBox.Enabled = false;
             }
             visualisationPictureBox.Invalidate();

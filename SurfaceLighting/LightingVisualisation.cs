@@ -217,15 +217,15 @@ namespace SurfaceLighting
 
         public float eps = (float)1e-6;
 
-        public float kd = 0.3f, ks = 0.6f; // coefficients describing the influence of a given component (the diffuse component of the illumination 
-                                     // rmodel (Lambert model) and the specular component, respectively) on the result (0 - 1)
+        public float kd = 1f, ks = 1f; // coefficients describing the influence of a given component (the diffuse component of the illumination 
+                                       // rmodel (Lambert model) and the specular component, respectively) on the result (0 - 1)
         public float[] Il { get; private set; } = { 1, 1, 1 }; // light color scaled to 0-1 (white by default)
         Vector3 V = new Vector3(0, 0, 1);
         public int m = 50; // coefficient describing how much a given triangle is mirrored (1-100)
-        public Point3D lightSource { get; private set; } = new Point3D(0.5f, 0.5f, 5);
+        public Point3D lightSource { get; private set; } = new Point3D(0.5f, 0.5f, 2);
 
         public ObjColor objColor { get; private set; }
-        public float[] Io { get; set; } = { 128f / 255, 219f / 255, 229f / 255 }; // object color scaled to 0-1 (green by default)
+        public float[] Io { get; set; } = { 0f / 255, 128f / 255, 0f / 255 }; // object color scaled to 0-1 (green by default)
         public string imageFilePath { get; private set; } = @"..\..\..\Images\cat.jpg";//@"C:\Users\weron\OneDrive\Pulpit\semestr5\gk\proj2\SurfaceLighting\SurfaceLighting\Images\cat.jpg";//@"Images/cat.jpg";
         private DirectBitmap imageBM;
 

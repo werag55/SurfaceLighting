@@ -26,27 +26,27 @@ namespace SurfaceLighting
         public void initTriangleGrid()
         {
             triangles.Clear();
-            float step = 1.0f / n;
-            for (float i = 0; i < 1; i += step)
-            {
-                for (float j = 0; j < 1; j += step)
-                {
-                    triangles.Add(new Triangle3D(i, j, i + step, j, i + step, j + step));
-                    triangles.Add(new Triangle3D(i, j, i, j + step, i + step, j + step));
-                }
-            }
-
-            //float step = (float)size / n;
-            //for (float i = 0; i < n; i++)
+            //float step = 1.0f / n;
+            //for (float i = 0; i < 1; i += step)
             //{
-            //    for (float j = 1; j <= n; j++)
+            //    for (float j = 0; j < 1; j += step)
             //    {
-            //        triangles.Add(new Triangle3D(i * step, j * step,
-            //            (i + 1) * step, j * step, (i + 1) * step, (j - 1) * step, size));
-            //        triangles.Add(new Triangle3D(i * step, j * step,
-            //            i * step, (j - 1) * step, (i + 1) * step, (j - 1) * step, size));
+            //        triangles.Add(new Triangle3D(i, j, i + step, j, i + step, j + step));
+            //        triangles.Add(new Triangle3D(i, j, i, j + step, i + step, j + step));
             //    }
             //}
+
+            float step = (float)size / n;
+            for (float i = 0; i < n; i++)
+            {
+                for (float j = 1; j <= n; j++)
+                {
+                    triangles.Add(new Triangle3D(i * step, j * step,
+                        (i + 1) * step, j * step, (i + 1) * step, (j - 1) * step, size));
+                    triangles.Add(new Triangle3D(i * step, j * step,
+                        i * step, (j - 1) * step, (i + 1) * step, (j - 1) * step, size));
+                }
+            }
         }
 
         public void initBitmap()

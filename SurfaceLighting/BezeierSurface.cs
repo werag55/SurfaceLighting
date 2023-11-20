@@ -191,7 +191,7 @@ namespace SurfaceLighting
             return false;
         }
 
-        #region 
+        #region setters
 
         public void setZ(int i, int j, float z)
         {
@@ -214,7 +214,6 @@ namespace SurfaceLighting
         }
 
         #endregion
-
 
         #endregion
     }
