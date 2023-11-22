@@ -72,6 +72,7 @@
             lightColorButton = new Button();
             lightColorLabel = new Label();
             visualisationPictureBox = new PictureBox();
+            fillCheckBox = new CheckBox();
             menuStrip.SuspendLayout();
             tableLayoutPanel.SuspendLayout();
             parametersPanel.SuspendLayout();
@@ -329,9 +330,11 @@
             // 
             mTrackBar.Location = new Point(4, 274);
             mTrackBar.Maximum = 100;
+            mTrackBar.Minimum = 1;
             mTrackBar.Name = "mTrackBar";
             mTrackBar.Size = new Size(405, 69);
             mTrackBar.TabIndex = 10;
+            mTrackBar.Value = 1;
             mTrackBar.Scroll += mTrackBar_Scroll;
             // 
             // mLabel
@@ -383,6 +386,7 @@
             // IoPanel
             // 
             IoPanel.BorderStyle = BorderStyle.FixedSingle;
+            IoPanel.Controls.Add(fillCheckBox);
             IoPanel.Controls.Add(objectImageButton);
             IoPanel.Controls.Add(objectColorButton);
             IoPanel.Controls.Add(imageRadioButton);
@@ -601,6 +605,20 @@
             visualisationPictureBox.Click += visualisationPictureBox_Click;
             visualisationPictureBox.Paint += visualisationPictureBox_Paint;
             // 
+            // fillCheckBox
+            // 
+            fillCheckBox.AutoSize = true;
+            fillCheckBox.Checked = true;
+            fillCheckBox.CheckState = CheckState.Checked;
+            fillCheckBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            fillCheckBox.Location = new Point(398, 3);
+            fillCheckBox.Name = "fillCheckBox";
+            fillCheckBox.Size = new Size(104, 36);
+            fillCheckBox.TabIndex = 10;
+            fillCheckBox.Text = "Filling";
+            fillCheckBox.UseVisualStyleBackColor = true;
+            fillCheckBox.CheckedChanged += fillCheckBox_CheckedChanged;
+            // 
             // mainForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
@@ -694,5 +712,6 @@
         private Label zLightLabel;
         private CheckBox lightMovementCheckBox;
         private TextBox zLightTextBox;
+        private CheckBox fillCheckBox;
     }
 }

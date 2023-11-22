@@ -220,17 +220,22 @@ namespace SurfaceLighting
         public float kd = 1f, ks = 1f; // coefficients describing the influence of a given component (the diffuse component of the illumination 
                                        // rmodel (Lambert model) and the specular component, respectively) on the result (0 - 1)
         public float[] Il { get; private set; } = { 1, 1, 1 }; // light color scaled to 0-1 (white by default)
+        public Point3D lightSource { get; private set; } = new Point3D(0.5f, 0.5f, 2);
+        
+        public float[,] Ilr = { { 1, 0, 0 }, { 0, 1, 0 }, { 0, 0, 1 } }; // reflectors light color scaled to 0-1 (red, green, blue)
+        public Point3D[] reflectors { get; private set; } = { new Point3D(0f, 0f, 2), new Point3D(1f, 0f, 2), new Point3D(0.5f, 1f, 2) };
+
         Vector3 V = new Vector3(0, 0, 1);
         public int m = 50; // coefficient describing how much a given triangle is mirrored (1-100)
-        public Point3D lightSource { get; private set; } = new Point3D(0.5f, 0.5f, 2);
+        
 
         public ObjColor objColor { get; private set; }
         public float[] Io { get; set; } = { 0f / 255, 128f / 255, 0f / 255 }; // object color scaled to 0-1 (green by default)
-        public string imageFilePath { get; private set; } = @"..\..\..\Images\cat.jpg";//@"C:\Users\weron\OneDrive\Pulpit\semestr5\gk\proj2\SurfaceLighting\SurfaceLighting\Images\cat.jpg";//@"Images/cat.jpg";
+        public string imageFilePath { get; private set; } = @"..\..\..\Images\cat.jpg";
         private DirectBitmap imageBM;
 
         public bool showNormalMap { get; private set; } = false;
-        public string normalMapFilePath { get; private set; }  = @"..\..\..\NormalMaps\NormalMap.jpg";
+        public string normalMapFilePath { get; private set; }  = @"..\..\..\NormalMaps\face.png"; 
         private DirectBitmap normalMapBM;
 
         #region setters
@@ -451,24 +456,38 @@ namespace SurfaceLighting
         #region light animation
 
         private double angle = 0;
-        public void moveLight()
-        {
-            // Obliczenia pozycji punktu (światła) na elipsie w zakresie od 0 do 1
-            float x = (float)(0.5 + 0.4 * Math.Cos(angle)); // 0.5 to przesunięcie do środka obszaru (0.1 to 0.9)
-            float y = (float)(0.5 + 0.2 * Math.Sin(angle)); // 0.5 to przesunięcie do środka obszaru (0.3 to 0.7)
+        //public void moveLight() // animation of light movement along an ellipse
+        //{
+        //    float x = (float)(0.5 + 0.4 * Math.Cos(angle)); 
+        //    float y = (float)(0.5 + 0.2 * Math.Sin(angle)); 
 
-            // Aktualizacja pozycji punktu (światła)
+        //    lightSource = new Point3D(x, y, lightSource.z);
+
+        //    angle += 0.2;
+        //    if (angle >= 2 * Math.PI)
+        //        angle = 0;
+
+        //    initBitmap();
+        //}
+
+        private double revolutions = 2; // number of full spiral revolutions
+        private double maxRadius = 0.4; // maximum radius of the spiral
+        public void moveLight() // animation of light movement along a spiral with constant z
+        {
+            double radius = angle / (2 * Math.PI * revolutions) * maxRadius; 
+            float x = (float)(0.5 + radius * Math.Cos(angle)); 
+            float y = (float)(0.5 + radius * Math.Sin(angle)); 
+
             lightSource = new Point3D(x, y, lightSource.z);
 
-            // Inkrementacja kąta dla ruchu po elipsie
-            angle += 0.2;
-            if (angle >= 2 * Math.PI)
-            {
-                angle = 0;
-            }
+            angle += 0.1;
+
+            if (angle >= 2 * Math.PI * revolutions)
+                angle = 0; 
 
             initBitmap();
         }
+
 
         #endregion
     }

@@ -24,7 +24,7 @@ namespace SurfaceLighting
         public BezeierSurface(int size)
         {
             this.size = size;
-            triangleGrid = new TriangleGrid(8, size);
+            triangleGrid = new TriangleGrid(16, size);
             radius = (float)size / 30;
 
             initControlPoints();

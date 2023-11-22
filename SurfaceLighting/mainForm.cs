@@ -6,6 +6,7 @@ using System.Windows.Forms;
 
 using System.IO;
 using System.Diagnostics.Metrics;
+using static System.Net.WebRequestMethods;
 
 namespace SurfaceLighting
 {
@@ -16,6 +17,7 @@ namespace SurfaceLighting
 
         LightingVisualisation lightingVisualisation;
 
+        bool filling = true;
         bool controlPoints = false;
         bool triangleGrid = false;
 
@@ -70,8 +72,8 @@ namespace SurfaceLighting
 
         private void visualisationPictureBox_Paint(object sender, PaintEventArgs e)
         {
-
-            e.Graphics.DrawImage(lightingVisualisation.visualisationBM.Bitmap, Point.Empty);
+            if (filling)
+                e.Graphics.DrawImage(lightingVisualisation.visualisationBM.Bitmap, Point.Empty);
             if (triangleGrid)
                 e.Graphics.DrawImage(lightingVisualisation.bezeierSurface.triangleGrid.triangleGridBM.Bitmap, Point.Empty);
             if (controlPoints)
@@ -126,7 +128,7 @@ namespace SurfaceLighting
             float min, float max)
         {
             if (((TextBox)sender).Text == " ")
-                    return;
+                return;
 
             if (string.IsNullOrEmpty(((TextBox)sender).Text))
                 ((TextBox)sender).Text = prevValue;
@@ -350,6 +352,15 @@ namespace SurfaceLighting
 
         #region object color
 
+        private void fillCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (fillCheckBox.Checked)
+                filling = true;
+            else
+                filling = false;
+
+            visualisationPictureBox.Invalidate();
+        }
         private void objectColorButton_Click(object sender, EventArgs e)
         {
             ColorDialog colorDialog = new ColorDialog();
@@ -484,5 +495,6 @@ namespace SurfaceLighting
 
         #endregion
         #endregion
+
     }
 }
