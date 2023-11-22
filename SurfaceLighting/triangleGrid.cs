@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,12 +14,18 @@ namespace SurfaceLighting
         private int size;
         public List<Triangle3D> triangles { get; set; } = new List<Triangle3D>();
         public DirectBitmap triangleGridBM { get; private set; } 
-        public Graphics g { get; private set; } 
+        public Graphics g { get; private set; }
+        public Matrix4x4 M = new Matrix4x4();
 
         public TriangleGrid(int n, int size)
         {
             this.n = n;
             this.size = size;
+
+            M = Matrix4x4.CreateTranslation(-size / 2, -size / 2, 0)
+                * Matrix4x4.CreateFromYawPitchRoll(0, 0, 0)
+                * Matrix4x4.CreateTranslation(size / 2, size / 2, 0);
+
             initTriangleGrid();
             initBitmap();
         }
@@ -63,9 +70,23 @@ namespace SurfaceLighting
                 Triangle3D scaledTriangle = triangleGridBM.scaleTriangle(triangles[i]);
                 using (Pen pen = new Pen(Color.Red, 2))
                 {
-                    g.DrawPolygon(pen, scaledTriangle.vertices2D());
+                    //g.DrawPolygon(pen, scaledTriangle.vertices2D());
+                    //var vertices = scaledTriangle.vertices2D();
+                    for (int j = 0; j < scaledTriangle.vertices.Length; j++)
+                        //g.DrawLine(pen, vertices[j], vertices[(j + 1) % vertices.Length]);
+                        drawLineTransform(scaledTriangle.vertices[j], scaledTriangle.vertices[(j + 1) % scaledTriangle.vertices.Length],
+                            pen, g);
                 }
             }
+        }
+
+        private void drawLineTransform(Point3D p1, Point3D p2, Pen pen, Graphics g)
+        {
+            Vector3 p1V = new Vector3(p1.x, p1.y, 100 * p1.z);
+            Vector3 p2V = new Vector3(p2.x, p2.y, 100 * p2.z);
+            p1V = Vector3.Transform(p1V, M);
+            p2V = Vector3.Transform(p2V, M);
+            g.DrawLine(pen, p1V.X, p1V.Y, p2V.X, p2V.Y);
         }
 
         public void setN(int n)

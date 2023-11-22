@@ -54,6 +54,10 @@ namespace SurfaceLighting
             int index = x + (y * Width);
             int col = colour.ToArgb();
 
+            if (index < 0 || index > Width * Height)
+                return;
+
+
             Bits[index] = col;
         }
 

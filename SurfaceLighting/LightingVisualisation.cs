@@ -28,6 +28,7 @@ namespace SurfaceLighting
 
             bezeierSurface = new BezeierSurface(size);
             calculateD();
+            calculateM();
             initBitmap();
             setImage(imageFilePath);
             setNormalMap(normalMapFilePath);
@@ -45,13 +46,26 @@ namespace SurfaceLighting
             visualisationBM = new DirectBitmap(bezeierSurface.size, bezeierSurface.size);
             g = Graphics.FromImage(visualisationBM.Bitmap);
 
-            //Parallel.ForEach(tg.triangles, triangle =>
-            //    fillPolygon(triangle));
+            Parallel.ForEach(tg.triangles, triangle =>
+                fillPolygon(triangle));
 
             ///////////////////////////
             ///
-            foreach (var triangle in tg.triangles)
-                fillPolygon(triangle);
+            //foreach (var triangle in tg.triangles)
+            //    fillPolygon(triangle);
+        }
+
+
+        private float DegreesToRadians(float degrees)
+        {
+            return degrees * (float)Math.PI / 180.0f;
+        }
+
+        private void setPixelTransform(float x, float y, float z, Color color, DirectBitmap db)
+        {
+            Vector3 p = new Vector3(x, y, 1000 * z);
+            p = Vector3.Transform(p, M);
+            db.SetPixel((int)p.X, (int)p.Y, color);
         }
 
         #region fillPolygon
@@ -90,9 +104,10 @@ namespace SurfaceLighting
                 for (int i =  0; i < activeEdgeTable.Count - 1; i+=2)
                 {
                     for (int j = (int)Math.Floor(activeEdgeTable[i].xMin); j <= Math.Ceiling(activeEdgeTable[i+1].xMin); j++)
-                    { 
-                        Color I = getFillingColor(visualisationBM.reScaleX(j), visualisationBM.reScaleY(y), t /*(Triangle3D)polygon*/);
-                        visualisationBM.SetPixel(j, y, I);
+                    {
+                        Color I = getFillingColor(visualisationBM.reScaleX(j), visualisationBM.reScaleY(y), t /*(Triangle3D)polygon*/, out float z);
+                        //visualisationBM.SetPixel(j, y, I);
+                        setPixelTransform(j, y, z, I, visualisationBM);
                     }
 
                 }
@@ -232,7 +247,10 @@ namespace SurfaceLighting
 
         Vector3 V = new Vector3(0, 0, 1);
         public int m = 50; // coefficient describing how much a given triangle is mirrored (1-100)
-        
+
+        public int alfa { get; private set; } = 60;
+        public int beta { get; private set; } = 30;
+        Matrix4x4 M = new Matrix4x4();
 
         public ObjColor objColor { get; private set; }
         public float[] Io { get; set; } = { 0f / 255, 128f / 255, 0f / 255 }; // object color scaled to 0-1 (green by default)
@@ -279,6 +297,7 @@ namespace SurfaceLighting
         {
             bezeierSurface.setZ(newZ);
             initBitmap();
+            bezeierSurface.triangleGrid.initBitmap();
         }
 
         public void setObjColor(ObjColor objC)
@@ -345,6 +364,32 @@ namespace SurfaceLighting
         {
             showReflectors = reflectors;
             initBitmap();
+        }
+
+        private void calculateM()
+        {
+            int size = bezeierSurface.size;
+            M = Matrix4x4.CreateTranslation(-size / 2, -size / 2, 0)
+                * Matrix4x4.CreateFromYawPitchRoll(0, DegreesToRadians(alfa), DegreesToRadians(beta))
+                * Matrix4x4.CreateTranslation(size/2, size/2, 0);
+
+            bezeierSurface.triangleGrid.M = M;
+        }
+
+        public void setAlfa(int newAlfa)
+        {
+            alfa = newAlfa;
+            calculateM();
+            initBitmap();
+            bezeierSurface.triangleGrid.initBitmap();
+        }
+
+        public void setBeta(int newBeta)
+        {
+            beta = newBeta;
+            calculateM();
+            initBitmap();
+            bezeierSurface.triangleGrid.initBitmap();
         }
 
         #endregion
@@ -443,10 +488,10 @@ namespace SurfaceLighting
             return ret < 0 ? 0 : ret;
         }
 
-        private Color getFillingColor(float x, float y, Triangle3D t)
+        private Color getFillingColor(float x, float y, Triangle3D t, out float z)
         {
             float[] barycCoord = barycentricCoordinates(x, y, t);
-            float z = interpolateZ(barycCoord, t);
+            z = interpolateZ(barycCoord, t);
 
             Vector3 N = Vector3.Normalize(interpolateNormalVector(barycCoord, t));
             if (showNormalMap)

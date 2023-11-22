@@ -43,6 +43,8 @@ namespace SurfaceLighting
             ksTrackBar.Value = (int)(lightingVisualisation.ks * 10);
             mTrackBar.Value = lightingVisualisation.m;
             zLightTrackBar.Value = (int)(lightingVisualisation.lightSource.z * 10);
+            alfaTrackBar.Value = lightingVisualisation.alfa;
+            betaTrackBar.Value = lightingVisualisation.beta;
 
             triangulationTextBox.Text = lightingVisualisation.bezeierSurface.triangleGrid.n.ToString();
             kdTextBox.Text = lightingVisualisation.kd.ToString();
@@ -512,6 +514,19 @@ namespace SurfaceLighting
             }
         }
 
+        #endregion
+
+        #region angles
+        private void alfaTrackBar_Scroll(object sender, EventArgs e)
+        {
+            lightingVisualisation.setAlfa(alfaTrackBar.Value);
+            visualisationPictureBox.Invalidate();
+        }
+        private void betaTrackBar_Scroll(object sender, EventArgs e)
+        {
+            lightingVisualisation.setBeta(betaTrackBar.Value);
+            visualisationPictureBox.Invalidate();
+        }
         #endregion
         #endregion
     }
