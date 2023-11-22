@@ -27,6 +27,7 @@ namespace SurfaceLighting
         { 
 
             bezeierSurface = new BezeierSurface(size);
+            calculateD();
             initBitmap();
             setImage(imageFilePath);
             setNormalMap(normalMapFilePath);
@@ -44,13 +45,13 @@ namespace SurfaceLighting
             visualisationBM = new DirectBitmap(bezeierSurface.size, bezeierSurface.size);
             g = Graphics.FromImage(visualisationBM.Bitmap);
 
-            Parallel.ForEach(tg.triangles, triangle =>
-                fillPolygon(triangle));
+            //Parallel.ForEach(tg.triangles, triangle =>
+            //    fillPolygon(triangle));
 
             ///////////////////////////
             ///
-            //foreach (var triangle in tg.triangles)
-            //    fillPolygon(triangle);
+            foreach (var triangle in tg.triangles)
+                fillPolygon(triangle);
         }
 
         #region fillPolygon
@@ -320,12 +321,29 @@ namespace SurfaceLighting
         public void setLightZ(float z)
         {
             lightSource.z = z;
+            foreach (var refl in reflectors)
+                refl.z = z;
+            calculateD();
             initBitmap();
+        }
+
+        private void calculateD()
+        {
+            Point3D p = new Point3D(0.5f, 0.5f, 0);
+            for (int i = 0; i < D.Length; i++)
+                D[i] = Vector3.Normalize(new Vector3(reflectors[i].x - p.x, reflectors[i].y - p.y,
+                    reflectors[i].z - p.z));
         }
 
         public void setLightBool(bool light)
         {
             showLight = light;
+            initBitmap();
+        }
+
+        public void setReflectorsBool(bool reflectors)
+        {
+            showReflectors = reflectors;
             initBitmap();
         }
 
@@ -445,15 +463,30 @@ namespace SurfaceLighting
                     (float)(pixelColor.B) / 255 };
             }
 
-            Vector3 L = Vector3.Normalize(new Vector3(lightSource.x - x, lightSource.y - y, lightSource.z - z)); // versor to light source
-            Vector3 R = Vector3.Normalize(2 * Vector3.Dot(N, L) * N - L);
+            Vector3 L, R;
 
             float[] I = new float[3];
             for (int i = 0; i < 3; i++)
             {
                 if (showLight)
+                {
+                    L = Vector3.Normalize(new Vector3(lightSource.x - x, lightSource.y - y, lightSource.z - z)); // versor to light source
+                    R = Vector3.Normalize(2 * Vector3.Dot(N, L) * N - L);
                     I[i] += ((kd * Il[i] * Io[i] * cos(N, L)
                         + ks * Il[i] * Io[i] * (float)Math.Pow(cos(V, R), m)));
+                }
+
+                if (showReflectors)
+                {
+                    for (int j = 0; j < 3; j++)
+                    {
+                        L = Vector3.Normalize(new Vector3(reflectors[j].x - x, reflectors[j].y - y, reflectors[j].z - z)); // versor to light source
+                        R = Vector3.Normalize(2 * Vector3.Dot(N, L) * N - L);
+                        I[i] += ((kd * Ilr[j, i] * (float)Math.Pow(cos(L, D[j]), 20) * Io[i] * cos(N, L)
+                            + ks * Ilr[j, i] * (float)Math.Pow(cos(L, D[j]), 20) * Io[i] * (float)Math.Pow(cos(V, R), m)));
+                    }
+                }
+
                 I[i] *= 255;
                 if (I[i] > 255)
                     I[i] = 255;

@@ -425,6 +425,16 @@ namespace SurfaceLighting
             visualisationPictureBox.Invalidate();
         }
 
+        private void reflectorsCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (reflectorsCheckBox.Checked)
+                lightingVisualisation.setReflectorsBool(true);
+            else
+                lightingVisualisation.setReflectorsBool(false);
+
+            visualisationPictureBox.Invalidate();
+        }
+
         private void lightColorButton_Click(object sender, EventArgs e)
         {
             ColorDialog colorDialog = new ColorDialog();
@@ -504,6 +514,5 @@ namespace SurfaceLighting
 
         #endregion
         #endregion
-
     }
 }

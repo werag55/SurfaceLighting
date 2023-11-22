@@ -66,6 +66,8 @@
             controlPointsCheckBox = new CheckBox();
             controlPointsLabel = new Label();
             lightColorPanel = new Panel();
+            reflectorsCheckBox = new CheckBox();
+            lightCheckBox = new CheckBox();
             zLightTextBox = new TextBox();
             zLightTrackBar = new TrackBar();
             zLightLabel = new Label();
@@ -73,8 +75,6 @@
             lightColorButton = new Button();
             lightColorLabel = new Label();
             visualisationPictureBox = new PictureBox();
-            lightCheckBox = new CheckBox();
-            checkBox2 = new CheckBox();
             menuStrip.SuspendLayout();
             tableLayoutPanel.SuspendLayout();
             parametersPanel.SuspendLayout();
@@ -406,7 +406,7 @@
             fillCheckBox.Checked = true;
             fillCheckBox.CheckState = CheckState.Checked;
             fillCheckBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            fillCheckBox.Location = new Point(398, 3);
+            fillCheckBox.Location = new Point(385, 3);
             fillCheckBox.Name = "fillCheckBox";
             fillCheckBox.Size = new Size(104, 36);
             fillCheckBox.TabIndex = 10;
@@ -533,7 +533,7 @@
             // lightColorPanel
             // 
             lightColorPanel.BorderStyle = BorderStyle.FixedSingle;
-            lightColorPanel.Controls.Add(checkBox2);
+            lightColorPanel.Controls.Add(reflectorsCheckBox);
             lightColorPanel.Controls.Add(lightCheckBox);
             lightColorPanel.Controls.Add(zLightTextBox);
             lightColorPanel.Controls.Add(zLightTrackBar);
@@ -546,6 +546,32 @@
             lightColorPanel.Name = "lightColorPanel";
             lightColorPanel.Size = new Size(509, 231);
             lightColorPanel.TabIndex = 10;
+            // 
+            // reflectorsCheckBox
+            // 
+            reflectorsCheckBox.AutoSize = true;
+            reflectorsCheckBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            reflectorsCheckBox.Location = new Point(347, 52);
+            reflectorsCheckBox.Name = "reflectorsCheckBox";
+            reflectorsCheckBox.Size = new Size(144, 36);
+            reflectorsCheckBox.TabIndex = 16;
+            reflectorsCheckBox.Text = "Reflectors";
+            reflectorsCheckBox.UseVisualStyleBackColor = true;
+            reflectorsCheckBox.CheckedChanged += reflectorsCheckBox_CheckedChanged;
+            // 
+            // lightCheckBox
+            // 
+            lightCheckBox.AutoSize = true;
+            lightCheckBox.Checked = true;
+            lightCheckBox.CheckState = CheckState.Checked;
+            lightCheckBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            lightCheckBox.Location = new Point(398, 10);
+            lightCheckBox.Name = "lightCheckBox";
+            lightCheckBox.Size = new Size(93, 36);
+            lightCheckBox.TabIndex = 15;
+            lightCheckBox.Text = "Light";
+            lightCheckBox.UseVisualStyleBackColor = true;
+            lightCheckBox.CheckedChanged += lightCheckBox_CheckedChanged;
             // 
             // zLightTextBox
             // 
@@ -622,33 +648,6 @@
             visualisationPictureBox.TabStop = false;
             visualisationPictureBox.Click += visualisationPictureBox_Click;
             visualisationPictureBox.Paint += visualisationPictureBox_Paint;
-            // 
-            // lightCheckBox
-            // 
-            lightCheckBox.AutoSize = true;
-            lightCheckBox.Checked = true;
-            lightCheckBox.CheckState = CheckState.Checked;
-            lightCheckBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            lightCheckBox.Location = new Point(398, 10);
-            lightCheckBox.Name = "lightCheckBox";
-            lightCheckBox.Size = new Size(93, 36);
-            lightCheckBox.TabIndex = 15;
-            lightCheckBox.Text = "Light";
-            lightCheckBox.UseVisualStyleBackColor = true;
-            lightCheckBox.CheckedChanged += lightCheckBox_CheckedChanged;
-            // 
-            // checkBox2
-            // 
-            checkBox2.AutoSize = true;
-            checkBox2.Checked = true;
-            checkBox2.CheckState = CheckState.Checked;
-            checkBox2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            checkBox2.Location = new Point(385, 52);
-            checkBox2.Name = "checkBox2";
-            checkBox2.Size = new Size(104, 36);
-            checkBox2.TabIndex = 16;
-            checkBox2.Text = "Filling";
-            checkBox2.UseVisualStyleBackColor = true;
             // 
             // mainForm
             // 
@@ -744,7 +743,7 @@
         private CheckBox lightMovementCheckBox;
         private TextBox zLightTextBox;
         private CheckBox fillCheckBox;
-        private CheckBox checkBox2;
+        private CheckBox reflectorsCheckBox;
         private CheckBox lightCheckBox;
     }
 }
