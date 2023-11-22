@@ -54,6 +54,7 @@
             kdTrackBar = new TrackBar();
             kdLabel = new Label();
             IoPanel = new Panel();
+            fillCheckBox = new CheckBox();
             objectImageButton = new Button();
             objectColorButton = new Button();
             imageRadioButton = new RadioButton();
@@ -72,7 +73,8 @@
             lightColorButton = new Button();
             lightColorLabel = new Label();
             visualisationPictureBox = new PictureBox();
-            fillCheckBox = new CheckBox();
+            lightCheckBox = new CheckBox();
+            checkBox2 = new CheckBox();
             menuStrip.SuspendLayout();
             tableLayoutPanel.SuspendLayout();
             parametersPanel.SuspendLayout();
@@ -160,9 +162,9 @@
             parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 52.6666679F));
             parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 331F));
             parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 143F));
-            parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 227F));
-            parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 57F));
-            parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 105F));
+            parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 237F));
+            parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 59F));
+            parametersTableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 93F));
             parametersTableLayoutPanel.Size = new Size(515, 1162);
             parametersTableLayoutPanel.TabIndex = 0;
             // 
@@ -172,9 +174,9 @@
             normalMapPanel.Controls.Add(normalMapButton);
             normalMapPanel.Controls.Add(normalMapCheckBox);
             normalMapPanel.Dock = DockStyle.Fill;
-            normalMapPanel.Location = new Point(3, 1002);
+            normalMapPanel.Location = new Point(3, 1012);
             normalMapPanel.Name = "normalMapPanel";
-            normalMapPanel.Size = new Size(509, 51);
+            normalMapPanel.Size = new Size(509, 53);
             normalMapPanel.TabIndex = 9;
             // 
             // normalMapButton
@@ -204,10 +206,10 @@
             // textBox1
             // 
             textBox1.Dock = DockStyle.Fill;
-            textBox1.Location = new Point(3, 1059);
+            textBox1.Location = new Point(3, 1071);
             textBox1.Multiline = true;
             textBox1.Name = "textBox1";
-            textBox1.Size = new Size(509, 100);
+            textBox1.Size = new Size(509, 88);
             textBox1.TabIndex = 7;
             // 
             // triangleGridPanel
@@ -398,6 +400,20 @@
             IoPanel.Size = new Size(509, 137);
             IoPanel.TabIndex = 3;
             // 
+            // fillCheckBox
+            // 
+            fillCheckBox.AutoSize = true;
+            fillCheckBox.Checked = true;
+            fillCheckBox.CheckState = CheckState.Checked;
+            fillCheckBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            fillCheckBox.Location = new Point(398, 3);
+            fillCheckBox.Name = "fillCheckBox";
+            fillCheckBox.Size = new Size(104, 36);
+            fillCheckBox.TabIndex = 10;
+            fillCheckBox.Text = "Filling";
+            fillCheckBox.UseVisualStyleBackColor = true;
+            fillCheckBox.CheckedChanged += fillCheckBox_CheckedChanged;
+            // 
             // objectImageButton
             // 
             objectImageButton.Enabled = false;
@@ -517,6 +533,8 @@
             // lightColorPanel
             // 
             lightColorPanel.BorderStyle = BorderStyle.FixedSingle;
+            lightColorPanel.Controls.Add(checkBox2);
+            lightColorPanel.Controls.Add(lightCheckBox);
             lightColorPanel.Controls.Add(zLightTextBox);
             lightColorPanel.Controls.Add(zLightTrackBar);
             lightColorPanel.Controls.Add(zLightLabel);
@@ -526,7 +544,7 @@
             lightColorPanel.Dock = DockStyle.Fill;
             lightColorPanel.Location = new Point(3, 775);
             lightColorPanel.Name = "lightColorPanel";
-            lightColorPanel.Size = new Size(509, 221);
+            lightColorPanel.Size = new Size(509, 231);
             lightColorPanel.TabIndex = 10;
             // 
             // zLightTextBox
@@ -605,19 +623,32 @@
             visualisationPictureBox.Click += visualisationPictureBox_Click;
             visualisationPictureBox.Paint += visualisationPictureBox_Paint;
             // 
-            // fillCheckBox
+            // lightCheckBox
             // 
-            fillCheckBox.AutoSize = true;
-            fillCheckBox.Checked = true;
-            fillCheckBox.CheckState = CheckState.Checked;
-            fillCheckBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            fillCheckBox.Location = new Point(398, 3);
-            fillCheckBox.Name = "fillCheckBox";
-            fillCheckBox.Size = new Size(104, 36);
-            fillCheckBox.TabIndex = 10;
-            fillCheckBox.Text = "Filling";
-            fillCheckBox.UseVisualStyleBackColor = true;
-            fillCheckBox.CheckedChanged += fillCheckBox_CheckedChanged;
+            lightCheckBox.AutoSize = true;
+            lightCheckBox.Checked = true;
+            lightCheckBox.CheckState = CheckState.Checked;
+            lightCheckBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            lightCheckBox.Location = new Point(398, 10);
+            lightCheckBox.Name = "lightCheckBox";
+            lightCheckBox.Size = new Size(93, 36);
+            lightCheckBox.TabIndex = 15;
+            lightCheckBox.Text = "Light";
+            lightCheckBox.UseVisualStyleBackColor = true;
+            lightCheckBox.CheckedChanged += lightCheckBox_CheckedChanged;
+            // 
+            // checkBox2
+            // 
+            checkBox2.AutoSize = true;
+            checkBox2.Checked = true;
+            checkBox2.CheckState = CheckState.Checked;
+            checkBox2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            checkBox2.Location = new Point(385, 52);
+            checkBox2.Name = "checkBox2";
+            checkBox2.Size = new Size(104, 36);
+            checkBox2.TabIndex = 16;
+            checkBox2.Text = "Filling";
+            checkBox2.UseVisualStyleBackColor = true;
             // 
             // mainForm
             // 
@@ -713,5 +744,7 @@
         private CheckBox lightMovementCheckBox;
         private TextBox zLightTextBox;
         private CheckBox fillCheckBox;
+        private CheckBox checkBox2;
+        private CheckBox lightCheckBox;
     }
 }

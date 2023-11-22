@@ -219,11 +219,15 @@ namespace SurfaceLighting
 
         public float kd = 1f, ks = 1f; // coefficients describing the influence of a given component (the diffuse component of the illumination 
                                        // rmodel (Lambert model) and the specular component, respectively) on the result (0 - 1)
+
+        public bool showLight { get; private set; } = true;
         public float[] Il { get; private set; } = { 1, 1, 1 }; // light color scaled to 0-1 (white by default)
         public Point3D lightSource { get; private set; } = new Point3D(0.5f, 0.5f, 2);
-        
+        public bool showReflectors { get; private set; } = false;
+
         public float[,] Ilr = { { 1, 0, 0 }, { 0, 1, 0 }, { 0, 0, 1 } }; // reflectors light color scaled to 0-1 (red, green, blue)
         public Point3D[] reflectors { get; private set; } = { new Point3D(0f, 0f, 2), new Point3D(1f, 0f, 2), new Point3D(0.5f, 1f, 2) };
+        public Vector3[] D { get; private set; } = { new Vector3(), new Vector3(), new Vector3() };
 
         Vector3 V = new Vector3(0, 0, 1);
         public int m = 50; // coefficient describing how much a given triangle is mirrored (1-100)
@@ -316,6 +320,12 @@ namespace SurfaceLighting
         public void setLightZ(float z)
         {
             lightSource.z = z;
+            initBitmap();
+        }
+
+        public void setLightBool(bool light)
+        {
+            showLight = light;
             initBitmap();
         }
 
@@ -441,8 +451,10 @@ namespace SurfaceLighting
             float[] I = new float[3];
             for (int i = 0; i < 3; i++)
             {
-                I[i] = 255 * ((kd * Il[i] * Io[i] * cos(N, L)
-                    + ks * Il[i] * Io[i] * (float)Math.Pow(cos(V, R), m)));
+                if (showLight)
+                    I[i] += ((kd * Il[i] * Io[i] * cos(N, L)
+                        + ks * Il[i] * Io[i] * (float)Math.Pow(cos(V, R), m)));
+                I[i] *= 255;
                 if (I[i] > 255)
                     I[i] = 255;
             }

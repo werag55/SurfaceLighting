@@ -415,6 +415,15 @@ namespace SurfaceLighting
         #endregion
 
         #region light 
+        private void lightCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (lightCheckBox.Checked)
+                lightingVisualisation.setLightBool(true);
+            else
+                lightingVisualisation.setLightBool(false);
+
+            visualisationPictureBox.Invalidate();
+        }
 
         private void lightColorButton_Click(object sender, EventArgs e)
         {
