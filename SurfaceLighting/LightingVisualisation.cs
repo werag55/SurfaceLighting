@@ -248,8 +248,8 @@ namespace SurfaceLighting
         Vector3 V = new Vector3(0, 0, 1);
         public int m = 50; // coefficient describing how much a given triangle is mirrored (1-100)
 
-        public int alfa { get; private set; } = 60;
-        public int beta { get; private set; } = 30;
+        public int alfa { get; private set; } = 0;
+        public int beta { get; private set; } = 0;
         Matrix4x4 M = new Matrix4x4();
 
         public ObjColor objColor { get; private set; }
@@ -396,7 +396,7 @@ namespace SurfaceLighting
 
         #region interpolation
 
-        //private float[] barycentricCoordinates(float x, float y, float z, Triangle3D t)
+        //private float[] barycentricCoordinates(float x, float y, Triangle3D t)
         //{
         //    PointF[] vertices2D = t.vertices2D();
         //    float x1 = vertices2D[0].X;
@@ -414,13 +414,27 @@ namespace SurfaceLighting
 
         //    return new float[] { alpha, beta, gamma };
         //}
-
         private float[] barycentricCoordinates(float x, float y, Triangle3D t)
         {
             Point3D p = new Point3D(x, y, 0);
             float u = triangleArea(new Triangle3D(p, t.vertices[1], t.vertices[2])) / triangleArea(t);
             float v = triangleArea(new Triangle3D(p, t.vertices[0], t.vertices[2])) / triangleArea(t);
             float w = triangleArea(new Triangle3D(p, t.vertices[0], t.vertices[1])) / triangleArea(t);
+
+            //if (u > 1)
+            //{ u = 1; v = 0; w = 0; }
+            //if (v > 1)
+            //{ u = 0; v = 1; w = 0; }
+            //if (w > 1)
+            //{ u = 0; v = 0; w = 1; }
+            //u = u < 0 ? 0 : u;
+            //v = v < 0 ? 0 : v;
+            //w = 1 - u - v;
+            //w = w < 0 ? 0 : w;
+
+            if (u + v + w > 1)
+                u = u;
+
             return new float[3] { u, v, w };
         }
 
@@ -431,7 +445,7 @@ namespace SurfaceLighting
             Vector3 AC = new Vector3(t.vertices[2].x - t.vertices[0].x,
                 t.vertices[2].y - t.vertices[0].y, 0);
 
-            return 0.5f * Vector3.Cross(AB, AC).Length();
+            return Vector3.Cross(AB, AC).Length();
         }
 
         public float interpolateZ(float[] barycentricCoordinates, Triangle3D t)

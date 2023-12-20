@@ -768,7 +768,6 @@
         private Panel parametersPanel;
         private Panel visualisationPanel;
         private TableLayoutPanel parametersTableLayoutPanel;
-        private RadioButton controlPointsRadioButton;
         private CheckBox controlPointsCheckBox;
         private TrackBar zControlPointTrackBar;
         private Label controlPointsLabel;

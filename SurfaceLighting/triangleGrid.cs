@@ -33,27 +33,27 @@ namespace SurfaceLighting
         public void initTriangleGrid()
         {
             triangles.Clear();
-            //float step = 1.0f / n;
-            //for (float i = 0; i < 1; i += step)
-            //{
-            //    for (float j = 0; j < 1; j += step)
-            //    {
-            //        triangles.Add(new Triangle3D(i, j, i + step, j, i + step, j + step));
-            //        triangles.Add(new Triangle3D(i, j, i, j + step, i + step, j + step));
-            //    }
-            //}
-
-            float step = (float)size / n;
-            for (float i = 0; i < n; i++)
+            float step = 1.0f / n;
+            for (float i = 0; i < 1; i += step)
             {
-                for (float j = 1; j <= n; j++)
+                for (float j = 0; j < 1; j += step)
                 {
-                    triangles.Add(new Triangle3D(i * step, j * step,
-                        (i + 1) * step, j * step, (i + 1) * step, (j - 1) * step, size));
-                    triangles.Add(new Triangle3D(i * step, j * step,
-                        i * step, (j - 1) * step, (i + 1) * step, (j - 1) * step, size));
+                    triangles.Add(new Triangle3D(i, j, i + step, j, i + step, j + step));
+                    triangles.Add(new Triangle3D(i, j, i, j + step, i + step, j + step));
                 }
             }
+
+            //float step = (float)size / n;
+            //for (float i = 0; i < n; i++)
+            //{
+            //    for (float j = 1; j <= n; j++)
+            //    {
+            //        triangles.Add(new Triangle3D(i * step, j * step,
+            //            (i + 1) * step, j * step, (i + 1) * step, (j - 1) * step, size));
+            //        triangles.Add(new Triangle3D(i * step, j * step,
+            //            i * step, (j - 1) * step, (i + 1) * step, (j - 1) * step, size));
+            //    }
+            //}
         }
 
         public void initBitmap()
@@ -82,8 +82,8 @@ namespace SurfaceLighting
 
         private void drawLineTransform(Point3D p1, Point3D p2, Pen pen, Graphics g)
         {
-            Vector3 p1V = new Vector3(p1.x, p1.y, 100 * p1.z);
-            Vector3 p2V = new Vector3(p2.x, p2.y, 100 * p2.z);
+            Vector3 p1V = new Vector3(p1.x, p1.y, 1000 * p1.z);
+            Vector3 p2V = new Vector3(p2.x, p2.y, 1000 * p2.z);
             p1V = Vector3.Transform(p1V, M);
             p2V = Vector3.Transform(p2V, M);
             g.DrawLine(pen, p1V.X, p1V.Y, p2V.X, p2V.Y);
