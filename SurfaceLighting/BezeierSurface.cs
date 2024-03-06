@@ -24,14 +24,16 @@ namespace SurfaceLighting
         public BezeierSurface(int size)
         {
             this.size = size;
-            triangleGrid = new TriangleGrid(16, size);
             radius = (float)size / 30;
 
             initControlPoints();
             initControlVectors();
             initBitmap();
+
+            triangleGrid = new TriangleGrid(16, size);
             calculateZ();
             calculateNormalVectors();
+            triangleGrid.initBitmap();
         }
 
         private void initControlPoints()
@@ -40,6 +42,8 @@ namespace SurfaceLighting
                 for (int j = 0; j < k; j++)
                     controlPoints[i, j] = new Point3D((float)i / (float)(k - 1),
                         (float)j / (float)(k - 1));
+
+            controlPoints[2, 2].z = 1;
         }
 
         private void initControlVectors()

@@ -65,6 +65,12 @@ namespace SurfaceLighting
         {
             Vector3 p = new Vector3(x, y, 1000 * z);
             p = Vector3.Transform(p, M);
+
+            p.X = p.X < 0 ? 0 : p.X;
+            p.X = p.X > db.Width ? db.Width - 1 : p.X;
+            p.Y = p.Y < 0 ? 0 : p.Y;
+            p.Y = p.Y > db.Height ? db.Height - 1 : p.Y; 
+
             db.SetPixel((int)p.X, (int)p.Y, color);
         }
 
@@ -414,6 +420,7 @@ namespace SurfaceLighting
 
         //    return new float[] { alpha, beta, gamma };
         //}
+
         private float[] barycentricCoordinates(float x, float y, Triangle3D t)
         {
             Point3D p = new Point3D(x, y, 0);
@@ -432,8 +439,8 @@ namespace SurfaceLighting
             //w = 1 - u - v;
             //w = w < 0 ? 0 : w;
 
-            if (u + v + w > 1)
-                u = u;
+            //if (u + v + w > 1)
+            //    u = u;
 
             return new float[3] { u, v, w };
         }

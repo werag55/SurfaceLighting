@@ -17,14 +17,15 @@ namespace SurfaceLighting
 
         LightingVisualisation lightingVisualisation;
 
-        bool filling = true;
+        bool filling = false;
         bool controlPoints = false;
-        bool triangleGrid = false;
+        bool triangleGrid = true;
 
         public mainForm()
         {
             InitializeComponent();
             InitializeTimer();
+            timer.Start();
 
             int size = visualisationPictureBox.Width < visualisationPictureBox.Height ?
                 visualisationPictureBox.Width : visualisationPictureBox.Height;
@@ -60,13 +61,16 @@ namespace SurfaceLighting
 
         private void InitializeTimer()
         {
-            timer.Interval = 20;
+            timer.Interval = 30;
             timer.Tick += Timer_Tick;
         }
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            lightingVisualisation.moveLight();
+            //lightingVisualisation.moveLight();
+
+            lightingVisualisation.bezeierSurface.triangleGrid.rotate();
+
             visualisationPictureBox.Invalidate();
         }
 

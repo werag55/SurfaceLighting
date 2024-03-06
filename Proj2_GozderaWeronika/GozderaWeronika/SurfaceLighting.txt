@@ -1,0 +1,17 @@
+Wartości niecałkowite za pomocą TextBoxów wprowadzamy stosując zapis z przecinkiem (nie z kropką).
+Przetransformowana siatka trójkątów rysuje się po modyfikacji kątów alfa / beta suwakiem.
+
+Checkbox "Bezier surface's control points" odpowiada za widoczność okręgów symbolizujących punkty kontrolne.
+Po kliknięciu na któryś z punktów kontrolnych aktywny staje się TrackBar "Z coordinate of the selected control point" oraz odpowiadający mu TextBox, którymi można manipulować wysokością danego punktu kontrolnego (akceptowane wartości: 0 - 2).
+
+Checkbox "Triangle grid" odpowiada za widoczność siatki trójkątów. TrackBar i TextBox poniżej - za dokładność tej siatki (ustawienie wartości n na kontrolce TrackBar/TextBox odpowiada siatce w której będzie 2*n*n trójkątów) (akceptowane wartości: 3 - 30). 
+
+Kolejne trzy TrackBary (oraz sąsiadujące im TextBoxy) odpowiadają współczynnikom kd, ks oraz m ze wzoru na I - kolor pixela (akceptowane wartości odpowiednio: 0 - 1, 0 - 1, 1 - 100).
+
+W sekcji "Color of the object:" za pomocą RadioButtonów możliwy jest wybór tła spośród: "Solid color" (interesujący nas kolor jednolitego tła można wybrać przyciskiem obok, który wyświetla aktualny kolor tła) oraz "Image" (po wybraniu aktywuje się sąsiadujący przycisk "Select..." umożliwiający zmianę aktualnego zdjęcia wyświetlanego w tle na inne, wybrane z plików komputera). 
+ 
+Przyciskiem koloru obok labelu "Color of the light:" można wybrać kolor światła. 
+Checkbox "Light movement" odpowiada za wznowienie/zastopowanie animacji ruchu źródła światła po spirali ze stałą wysokością. 
+Poniżej znajduje się TrackBar oraz sąsiadujący mu TextBox umożliwiający modyfikację wysokości źródła światła (akceptowane wartości: 2 - 10). 
+
+Checkbox "NormalMap" odpowiada za wczytanie normalmapy. Po zaznaczeniu aktywuje się przycisk "Select..." umożliwiający wczytanie innej normalmapy z plików.

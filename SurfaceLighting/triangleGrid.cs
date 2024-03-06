@@ -16,6 +16,7 @@ namespace SurfaceLighting
         public DirectBitmap triangleGridBM { get; private set; } 
         public Graphics g { get; private set; }
         public Matrix4x4 M = new Matrix4x4();
+        private Rotations r = new Rotations();
 
         public TriangleGrid(int n, int size)
         {
@@ -67,15 +68,27 @@ namespace SurfaceLighting
             g = Graphics.FromImage(triangleGridBM.Bitmap);
             for (int i = 0; i < triangles.Count; i++)
             {
-                Triangle3D scaledTriangle = triangleGridBM.scaleTriangle(triangles[i]);
+                //// proj 2
+                //Triangle3D scaledTriangle = triangleGridBM.scaleTriangle(triangles[i]);
+                //using (Pen pen = new Pen(Color.Red, 2))
+                //{
+                //    //g.DrawPolygon(pen, scaledTriangle.vertices2D());
+                //    //var vertices = scaledTriangle.vertices2D();
+                //    for (int j = 0; j < scaledTriangle.vertices.Length; j++)
+                //        //g.DrawLine(pen, vertices[j], vertices[(j + 1) % vertices.Length]);
+                //        drawLineTransform(scaledTriangle.vertices[j], scaledTriangle.vertices[(j + 1) % scaledTriangle.vertices.Length],
+                //            pen, g);
+                //}
+
+                //proj 4
+                Triangle3D t = triangles[i];
                 using (Pen pen = new Pen(Color.Red, 2))
                 {
-                    //g.DrawPolygon(pen, scaledTriangle.vertices2D());
-                    //var vertices = scaledTriangle.vertices2D();
-                    for (int j = 0; j < scaledTriangle.vertices.Length; j++)
-                        //g.DrawLine(pen, vertices[j], vertices[(j + 1) % vertices.Length]);
-                        drawLineTransform(scaledTriangle.vertices[j], scaledTriangle.vertices[(j + 1) % scaledTriangle.vertices.Length],
-                            pen, g);
+                    for (int j = 0; j < t.vertices.Length; j++)
+                        r.drawLineTransform(t.vertices[j], t.vertices[(j + 1) % t.vertices.Length],
+                            pen, g, size);
+
+                    r.fillPolygons(t, size, triangleGridBM, g);
                 }
             }
         }
@@ -87,6 +100,12 @@ namespace SurfaceLighting
             p1V = Vector3.Transform(p1V, M);
             p2V = Vector3.Transform(p2V, M);
             g.DrawLine(pen, p1V.X, p1V.Y, p2V.X, p2V.Y);
+        }
+
+        public void rotate()
+        {
+            r.rotate();
+            initBitmap();
         }
 
         public void setN(int n)

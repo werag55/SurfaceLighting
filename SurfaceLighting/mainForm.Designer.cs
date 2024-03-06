@@ -323,6 +323,8 @@
             // triangleGridCheckBox
             // 
             triangleGridCheckBox.AutoSize = true;
+            triangleGridCheckBox.Checked = true;
+            triangleGridCheckBox.CheckState = CheckState.Checked;
             triangleGridCheckBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             triangleGridCheckBox.Location = new Point(4, 3);
             triangleGridCheckBox.Name = "triangleGridCheckBox";
@@ -464,8 +466,6 @@
             // fillCheckBox
             // 
             fillCheckBox.AutoSize = true;
-            fillCheckBox.Checked = true;
-            fillCheckBox.CheckState = CheckState.Checked;
             fillCheckBox.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
             fillCheckBox.Location = new Point(385, 3);
             fillCheckBox.Name = "fillCheckBox";
