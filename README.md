@@ -6,6 +6,8 @@ WinForms application used to animate surface lighting under the influence of var
 - manipulating the coefficients of the formula determining the color of the surface at a given point
 - applying NormalMap to the surface
 
+<img width="839" alt="image" src="https://github.com/werag55/SurfaceLighting/assets/147431062/a130ec9e-135f-4a3a-b5ba-fee1ae290ac0">
+
 **Instruction**
 
 We enter non-integer values using TextBoxes using a comma (not a dot).
